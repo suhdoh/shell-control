@@ -15,7 +15,7 @@ The notices below are copied from the exact SHA-256-verified release archives us
 | AnnotationMono | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/AnnotationMono.tar.xz) | [LICENSE](assets/licenses/fonts/AnnotationMono/LICENSE) |
 | AnonymousPro | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/AnonymousPro.tar.xz) | [OFL.txt](assets/licenses/fonts/AnonymousPro/OFL.txt) |
 | BigBlueTerminal | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/BigBlueTerminal.tar.xz) | [LICENSE.TXT](assets/licenses/fonts/BigBlueTerminal/LICENSE.TXT) |
-| BitstreamVeraSansMono | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/BitstreamVeraSansMono.tar.xz) | [Bitstream Vera License.txt](assets/licenses/fonts/BitstreamVeraSansMono/Bitstream Vera License.txt) |
+| BitstreamVeraSansMono | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/BitstreamVeraSansMono.tar.xz) | [Bitstream Vera License.txt](assets/licenses/fonts/BitstreamVeraSansMono/Bitstream%20Vera%20License.txt) |
 | CascadiaCode | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CascadiaCode.tar.xz) | [LICENSE](assets/licenses/fonts/CascadiaCode/LICENSE) |
 | CascadiaMono | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CascadiaMono.tar.xz) | [LICENSE](assets/licenses/fonts/CascadiaMono/LICENSE) |
 | CodeNewRoman | [v3.5.1](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CodeNewRoman.tar.xz) | [license.txt](assets/licenses/fonts/CodeNewRoman/license.txt) |
