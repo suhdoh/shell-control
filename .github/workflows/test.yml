@@ -3,11 +3,11 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   test:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        shell: [powershell, pwsh]
     steps:
       - uses: actions/checkout@v4
-      - name: Test PowerShell compatibility
-        shell: ${{ matrix.shell }}
+      - name: Test Windows PowerShell 5.1
+        shell: powershell
+        run: ./tests/Test-Project.ps1
+      - name: Test PowerShell 7
+        shell: pwsh
         run: ./tests/Test-Project.ps1
