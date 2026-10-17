@@ -222,7 +222,10 @@ function global:Get-ShellMenuMatches {
             '^Systeminfo' {' system info hardware fastfetch status ';break}
             '^Neuer Tab' {' new tab reload terminal neuer ';break}
             '^Beenden' {' exit quit close beenden ende ';break}
-            '^Ansicht' {' appearance display view ansicht ';break}
+            '^Ansicht' {' appearance display view ansicht theme colors colours farben font fonts schrift schriften prompt crt retro ';break}
+            '^Werkzeuge' {' tools commands command reference befehle referenz hilfe help ';break}
+            '^Installation|^Komponenten' {' setup install installation components komponenten dependencies programme profiles profile fonts schriften terminal ';break}
+            '^Einstellungen' {' settings preferences einstellungen sprache language fastfetch startup start ';break}
             '^Dateien' {' files folders directory dateien ordner ';break}
             '^Hilfe' {' help docs reference hilfe ';break}
             '^Alle Befehle' {' all commands alle befehle ';break}
@@ -428,7 +431,7 @@ function global:Show-ShellMenu {
     if($Host.Name -ne 'ConsoleHost' -or [Console]::IsInputRedirected){Show-CustomCommands;return}
     $previousEncoding=[Console]::OutputEncoding;$esc=[char]27
     $script:ShellMenuLanguage=$null;[void](Get-ShellMenuLanguage)
-    $page='Übersicht';$category='Alle Befehle';$themeFamily=$null;$notice=''
+    $page='Übersicht';$category='Alle Befehle';$themeFamily=$null;$notice='';$fontReturn='Schriften'
     try {
         [Console]::OutputEncoding=New-Object Text.UTF8Encoding($false)
         [Console]::Write("$esc[?1049h$esc[H")
@@ -442,14 +445,18 @@ function global:Show-ShellMenu {
             try {
                 switch($page){
                     'Übersicht' {
-                        $choice=Select-ShellMenuItem '' @('Themes','Schriften','Prompt','Systeminfo','Werkzeuge','Installation','Einstellungen','Beenden')
+                        $choice=Select-ShellMenuItem '' @('Ansicht','Systeminfo','Werkzeuge','Installation','Einstellungen','Beenden')
                         if(-not $choice -or $choice -eq 'Beenden'){return}
                         $page=$choice
+                    }
+                    'Ansicht' {
+                        $choice=Select-ShellMenuItem '' @('Themes','Schriften','Prompt','CRT','← Zurück')
+                        $page=if(-not $choice -or $choice -eq '← Zurück'){'Übersicht'}else{$choice}
                     }
                     'Themes' {
                         $families=@(Get-ShellThemeFamilies)
                         $choice=Select-ShellMenuItem 'Theme-Familie wählen' (@($families|ForEach-Object Name)+@('← Zurück'))
-                        if(-not $choice -or $choice -eq '← Zurück'){$page='Übersicht';continue}
+                        if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         $themeFamily=$families|Where-Object Name -eq $choice|Select-Object -First 1
                         if($themeFamily.Variants.Count -eq 1){Set-TerminalTheme $themeFamily.Variants[0] 6>$null;$notice='✓ Theme aktiv: '+$themeFamily.Variants[0]}
                         else{$page='Varianten'}
@@ -462,7 +469,8 @@ function global:Show-ShellMenu {
                     }
                     'Schriften' {
                         $choice=Select-ShellMenuItem '' @('Schriftart','Schriftgröße','Schriften installieren','← Zurück')
-                        $page=if(-not $choice -or $choice -eq '← Zurück'){'Übersicht'}else{$choice}
+                        $fontReturn='Schriften'
+                        $page=if(-not $choice -or $choice -eq '← Zurück'){'Ansicht'}else{$choice}
                     }
                     'Schriftart' {
                         $catalog=@(Get-ShellFontChoices)
@@ -478,14 +486,14 @@ function global:Show-ShellMenu {
                     }
                     'Schriften installieren' {
                         $choice=Select-ShellMenuItem 'Schriftpaket wählen' @('Empfohlene Schriften','Alle geprüften Schriften','← Zurück')
-                        if(-not $choice -or $choice -eq '← Zurück'){$page='Schriften';continue}
+                        if(-not $choice -or $choice -eq '← Zurück'){$page=$fontReturn;continue}
                         $pack=if($choice -eq 'Empfohlene Schriften'){'Recommended'}else{'All'}
                         Invoke-ShellSetup -Component Fonts -Pack $pack;$notice='✓ Fertig'
                     }
                     'Prompt' {
                         $prefs=Get-ShellControlPreferences
                         $choice=Select-ShellMenuItem ('Engine: '+$prefs.promptEngine) @('Nativ · schnell','Oh My Posh','← Zurück')
-                        if(-not $choice -or $choice -eq '← Zurück'){$page='Übersicht';continue}
+                        if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         Set-ShellPromptEngine $(if($choice -eq 'Oh My Posh'){'omp'}else{'native'});$notice='✓ Fertig'
                     }
                     'Systeminfo' {Show-ShellSystemInfo;$page='Übersicht'}
@@ -511,19 +519,25 @@ function global:Show-ShellMenu {
                         if($item){$nav=Show-ShellMenuReference $item;if($nav -eq 'Zur Übersicht'){$page='Übersicht'}}
                     }
                     'Installation' {
-                        $choice=Select-ShellMenuItem '' @('Programme installieren','Schriften installieren','Profile einrichten','Themes einrichten','Alles einrichten','← Zurück')
+                        $choice=Select-ShellMenuItem '' @('Alles einrichten','Komponenten','← Zurück')
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Übersicht';continue}
-                        if($choice -eq 'Schriften installieren'){$page='Schriften installieren';continue}
-                        $component=switch($choice){'Programme installieren'{'Dependencies'} 'Profile einrichten'{'Profiles'} 'Themes einrichten'{'Terminal'} default{'All'}}
+                        if($choice -eq 'Komponenten'){$page='Komponenten';continue}
+                        Invoke-ShellSetup All;$notice='✓ Fertig'
+                    }
+                    'Komponenten' {
+                        $choice=Select-ShellMenuItem '' @('Programme installieren','Schriften installieren','Profile einrichten','Terminal einrichten','← Zurück')
+                        if(-not $choice -or $choice -eq '← Zurück'){$page='Installation';continue}
+                        if($choice -eq 'Schriften installieren'){$fontReturn='Komponenten';$page='Schriften installieren';continue}
+                        $component=switch($choice){'Programme installieren'{'Dependencies'} 'Profile einrichten'{'Profiles'} default{'Terminal'}}
                         Invoke-ShellSetup $component;$notice='✓ Fertig'
                     }
                     'Einstellungen' {
-                        $choice=Select-ShellMenuItem '' @('Sprache / Language','CRT','Fastfetch beim Start','← Zurück')
+                        $choice=Select-ShellMenuItem '' @('Sprache / Language','Fastfetch beim Start','← Zurück')
                         $page=if(-not $choice -or $choice -eq '← Zurück'){'Übersicht'}else{$choice}
                     }
                     'CRT' {
                         $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','Umschalten','← Zurück')
-                        if(-not $choice -or $choice -eq '← Zurück'){$page='Einstellungen';continue}
+                        if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         Set-TerminalCrt $(switch($choice){'Einschalten'{'on'} 'Ausschalten'{'off'} default{'toggle'}}) 6>$null
                     }
                     'Fastfetch beim Start' {

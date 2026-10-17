@@ -2,7 +2,7 @@
 hardware-cache.json
 installation.json
 installed-fonts.json
-Fonts/
+/Fonts/
 backups/
 logs/
 Cache/

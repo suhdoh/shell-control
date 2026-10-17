@@ -1,4 +1,4 @@
-﻿{
+{
   "en": {
     "Übersicht": "Overview",
     "Schriften": "Fonts",
@@ -128,7 +128,9 @@
     "Themes einrichten": "Set up themes",
     "Alles einrichten": "Set up everything",
     "Fastfetch beim Start": "Startup Fastfetch",
-    "✓ Fertig": "✓ Done"
+    "✓ Fertig": "✓ Done",
+    "Komponenten": "Components",
+    "Terminal einrichten": "Set up Terminal"
   },
   "de": {
     "Themes / Farben       · Design und Varianten": "Themes         · Farben und Varianten",

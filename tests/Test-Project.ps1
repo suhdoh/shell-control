@@ -42,8 +42,15 @@ Assert ($profileText.Contains('function Existing')) 'Existing profile code was l
 Assert ([regex]::Matches($profileText,'# BEGIN SHELL CONTROL').Count -eq 1) 'Profile install is not idempotent'
 Assert (Test-Path -LiteralPath (Join-Path $fixture 'backup1\PowerShell-profile.ps1')) 'Profile backup missing'
 Install-ShellTerminal -SetDefault
+$settings=Read-ShellTerminalJson $terminal
+$managed=$settings.profiles.list|Where-Object guid -eq '{2947bb6d-5661-4ace-9b6d-842eab823451}'
+$managed.font.size=19
+$managed.opacity=42
+[IO.File]::WriteAllText($terminal,($settings|ConvertTo-Json -Depth 60),(New-Object Text.UTF8Encoding($false)))
 Install-ShellTerminal -SetDefault
 $settings=Read-ShellTerminalJson $terminal
+$managed=$settings.profiles.list|Where-Object guid -eq '{2947bb6d-5661-4ace-9b6d-842eab823451}'
+Assert ($managed.font.size -eq 19 -and $managed.opacity -eq 42) 'Reinstall reset the customized Terminal profile'
 Assert (@($settings.profiles.list).Count -eq 4) 'Terminal profiles duplicated or existing profile lost'
 Assert (@($settings.schemes).Count -eq 18) 'Theme import duplicated or missing'
 Assert ($settings.exampleUrl -eq 'https://example.test/a//b') 'Unrelated Terminal preference changed'
@@ -57,6 +64,9 @@ foreach($language in @('en','de')){
     Assert ((Get-ShellMenuLanguage) -eq $language) 'Language does not persist'
     foreach($query in @('font','Schrift','size','Größe','setup','Installation')){
         Assert (@(Get-ShellMenuMatches -Items @('Schriften','Schriftgröße','Installation') -Query $query).Count -gt 0) ('Bilingual search failed: '+$query)
+    }
+    foreach($query in @('font','Schrift','theme','CRT','commands','Befehle','language','Sprache','dependencies','Programme')){
+        Assert (@(Get-ShellMenuMatches -Items @('Ansicht','Werkzeuge','Installation','Einstellungen') -Query $query).Count -gt 0) ('Nested category search failed: '+$query)
     }
     Assert (@(Get-ShellMenuOrderedItems @('← Zurück','A','B'))[-1] -eq '← Zurück') 'Back is not last'
     $refs=@(Get-CustomCommand)
@@ -74,6 +84,8 @@ foreach($package in $fonts.Packages){
     Assert ($package.Sha256 -match '^[a-fA-F0-9]{64}$') 'Missing SHA-256 digest'
     Assert ($package.Url.StartsWith('https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/')) 'Unpinned font download'
     foreach($font in $package.Fonts){Assert ($font.File -notmatch '[\\/]') 'Font filename is not a basename'}
+    $notices=Join-Path $project ('assets\licenses\fonts\'+$package.Name)
+    Assert (@(Get-ChildItem -LiteralPath $notices -Recurse -File|Where-Object Length -gt 0).Count -gt 0) ('Font notices missing: '+$package.Name)
 }
 # Synthetic data checks layout without probing the machine or changing its settings.
 $records=@(

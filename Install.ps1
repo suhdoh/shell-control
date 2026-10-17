@@ -26,6 +26,9 @@ foreach($file in (Get-ChildItem -LiteralPath $source -File)){
 $assets=Join-Path $InstallPath 'assets'
 New-Item -ItemType Directory -Path $assets -Force|Out-Null
 Copy-Item -Path (Join-Path $PSScriptRoot 'assets\*') -Destination $assets -Recurse -Force
+foreach($notice in @('LICENSE','THIRD-PARTY.md','FONT-CREDITS.md')){
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot $notice) -Destination (Join-Path $InstallPath $notice) -Force
+}
 $global:ShellControlRoot=$InstallPath
 if($TerminalSettingsPath){$global:ShellControlSettingsPath=$TerminalSettingsPath}
 . (Join-Path $InstallPath 'common.ps1')
@@ -51,7 +54,7 @@ try {
     if(-not $NoTerminal){Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles)}
     [void](Update-ShellHardwareCache)
     Send-ShellSetupProgress 100 'Installation completed'
-    $receipt=[pscustomobject]@{Version='0.1.0';Installed=(Get-Date -Format o);Root=$InstallPath;Documents=$DocumentsPath;Backup=$backup;FontPack=$FontPack}
+    $receipt=[pscustomobject]@{Version='0.1.1';Installed=(Get-Date -Format o);Root=$InstallPath;Documents=$DocumentsPath;Backup=$backup;FontPack=$FontPack}
     [IO.File]::WriteAllText((Join-Path $InstallPath 'installation.json'),($receipt|ConvertTo-Json),(New-Object Text.UTF8Encoding($false)))
 } finally {
     if($interactive){[Console]::Write("$esc[0m$esc[?25h$esc[?1049l")}

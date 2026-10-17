@@ -17,20 +17,24 @@
 
 A compact Windows shell setup with a searchable terminal menu, themed prompts and a hardware overview.
 
+I built this out of laziness: I like good-looking Gum windows and want to customize my terminal however I feel like, without editing config files every time. The defaults just look bad to me. Shell Control puts the things I actually use in one menu, inspired by Charm/Gum and rendered with native PowerShell for Windows.
+
 ```text
 Shell Control
 
-Themes       → theme family → variant
-Fonts        → typeface / size / install fonts
-Prompt       → native / Oh My Posh
+Appearance   → themes / fonts / prompt / CRT
+  Themes     → family → variant
+  Fonts      → typeface / size / install fonts
 System info  → hardware, network and usage bars
 Tools        → command reference / new tab
-Setup        → dependencies / fonts / profiles / themes
-Settings     → language / CRT / startup Fastfetch
+Setup        → full setup / individual components
+Settings     → language / startup Fastfetch
 Exit
 ```
 
 English is the default display language. Search always accepts English and German. The menu uses its own console renderer for stable input and selection; Gum is installed alongside the other shell tools.
+
+**Contents:** [Install](#install) · [Options](#options) · [Themes & fonts](#themes-and-fonts) · [Commands](#commands) · [Remove integration](#remove-profile-integration) · [Development](#development) · [Credits](#credits)
 
 ## Install
 
@@ -80,7 +84,7 @@ The verified font catalog contains 85 families. The full pack downloads 63 upstr
 
 Font choices in the menu are limited to installed families. A newly installed font may require a new Terminal tab before Windows refreshes its font cache. Natural glyph metrics are used; the retro Terminess preset retains a small spacing adjustment.
 
-The native prompt is the default for fast startup. Oh My Posh is an optional engine using the included minimal configuration. Switch it under **Prompt** and open a new tab if your current session retains an earlier prompt hook.
+The native prompt is the default for fast startup. Oh My Posh is an optional engine using the included minimal configuration. Switch it under **Appearance → Prompt** and open a new tab if your current session retains an earlier prompt hook.
 
 ## Commands
 
@@ -119,4 +123,8 @@ pwsh -NoProfile -File .\tests\Test-Project.ps1
 
 Tests use isolated settings and profile fixtures. They do not install programs, register fonts or change real Terminal settings. A fresh-machine installation is a separate integration check.
 
-See [THIRD-PARTY.md](THIRD-PARTY.md) for upstream projects and theme notices. Shell Control is MIT licensed; dependencies and fonts retain their own licenses.
+## Credits
+
+I do not own the fonts, third-party tools, icons or upstream theme palettes. Fonts are downloaded from **Nerd Fonts**, with the original typeface authors' copyright and licenses preserved. Thanks to those designers, the Nerd Fonts contributors, Charm and all the projects that make this setup possible.
+
+See [third-party credits](THIRD-PARTY.md) for tools, inspiration and themes, and [font credits](FONT-CREDITS.md) for every supported font package and its original notices. Setup installs these credit documents and notices with the configuration. Shell Control's own code is MIT licensed; third-party components retain their own licenses.

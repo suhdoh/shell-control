@@ -71,8 +71,9 @@ public static class ShellControlFontApi {
                 if(-not $file){throw ('Font archive does not contain '+$font.File)}
                 Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $folder $font.File)
             }
-            foreach($license in (Get-ChildItem -LiteralPath $extract -File -Recurse|Where-Object Name -match 'LICENSE|OFL|COPYING')){Copy-Item -LiteralPath $license.FullName -Destination (Join-Path $folder $license.Name) -Force}
         }
+        $notices=Join-Path $global:ShellControlRoot ('assets\licenses\fonts\'+$package.Name)
+        Copy-Item -Path (Join-Path $notices '*') -Destination $folder -Recurse -Force -ErrorAction Stop
         foreach($font in $package.Fonts){
             $path=Join-Path $folder $font.File
             New-ItemProperty -LiteralPath $registry -Name ($font.Family+' '+$font.Style+' (TrueType)') -Value $path -PropertyType String -Force|Out-Null
@@ -128,6 +129,8 @@ function global:Install-ShellTerminal {
             @{guid='{2947bb6d-5661-4ace-9b6d-842eab823453}';name='Shell Control · CMD';commandline=('%SystemRoot%\System32\cmd.exe /d /k "'+(Join-Path $global:ShellControlRoot 'cmd-terminal.cmd')+'"')}
         )
         foreach($definition in $profiles){
+            # Re-running setup keeps the user's existing appearance and command settings.
+            if(@($settings.profiles.list|Where-Object guid -eq $definition.guid).Count){continue}
             $profile=[pscustomobject]$definition
             $profile|Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{face='Terminess Nerd Font';size=16;cellWidth='0.54';cellHeight='1';weight='normal'})
             $profile|Add-Member colorScheme 'Amber 340'

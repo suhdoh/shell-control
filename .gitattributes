@@ -3,3 +3,5 @@
 *.json text eol=lf
 *.jsonc text eol=lf
 *.md text eol=lf
+# Preserve upstream font notices byte for byte, including their original whitespace.
+assets/licenses/fonts/** -text -whitespace
