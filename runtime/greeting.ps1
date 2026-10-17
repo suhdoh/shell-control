@@ -6,7 +6,7 @@ if ($Host.Name -eq 'ConsoleHost' -and
     -not [Console]::IsInputRedirected -and
     $env:SHELL_NO_GREETING -ne '1') {
     $ffExecutable = (Find-ShellExecutable fastfetch.exe)
-    if (Test-Path -LiteralPath $ffExecutable) {
+    if ($ffExecutable -and (Test-Path -LiteralPath $ffExecutable)) {
         Show-ShellFastfetch
     }
 }
