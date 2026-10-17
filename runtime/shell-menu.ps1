@@ -43,10 +43,7 @@ function global:Get-ShellMenuLanguage {
 }
 function global:Set-ShellMenuLanguage {
     param([ValidateSet('en','de')][string]$Language)
-    $path=(Join-Path $global:ShellControlRoot 'menu-settings.json')
-    $settings=if(Test-Path -LiteralPath $path){Get-Content -LiteralPath $path -Raw -Encoding UTF8|ConvertFrom-Json}else{[pscustomobject]@{}}
-    $settings|Add-Member -NotePropertyName language -NotePropertyValue $Language -Force
-    [IO.File]::WriteAllText($path,($settings|ConvertTo-Json -Depth 5),(New-Object Text.UTF8Encoding($false)))
+    Set-ShellControlPreference language $Language
     $script:ShellMenuLanguage=$Language
 }
 function global:ConvertTo-ShellMenuText {
@@ -108,11 +105,12 @@ function global:Set-TerminalFontSize {
     }
     if (-not $env:WT_PROFILE_ID) { throw 'Bitte font-size in Windows Terminal ausfuehren.' }
     $path = (Get-ShellTerminalSettingsPath)
-    $settings = Get-Content -LiteralPath $path -Raw -Encoding UTF8 | ConvertFrom-Json
+    $snapshot=$null
+    $settings = Read-ShellTerminalJson $path -Snapshot ([ref]$snapshot)
     $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
     if (-not $profile.font) { $profile | Add-Member font ([pscustomobject]@{}) }
     $profile.font | Add-Member -NotePropertyName size -NotePropertyValue $Size -Force
-    [IO.File]::WriteAllText($path, ($settings | ConvertTo-Json -Depth 50), (New-Object Text.UTF8Encoding($false)))
+    Write-ShellTerminalSettings -Path $path -Settings $settings -Snapshot $snapshot
     Write-Host ('Schriftgroesse: {0} pt · {1}' -f $Size, $appearance.ProfileName)
     if ($Reload) { Open-FreshTerminalTab }
 }

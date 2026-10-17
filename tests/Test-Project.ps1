@@ -103,6 +103,8 @@ foreach($file in $textFiles){
     $text=Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
     Assert ($text -notmatch '(?i)C:\\Users\\[^\\"\s]+') ('Machine-specific data: '+$file.Name)
 }
+. (Join-Path $PSScriptRoot 'Test-Safety.ps1')
+$global:LASTEXITCODE=0
 Write-Progress -Activity 'Shell Control setup' -Completed
 Write-Host ('PASS PowerShell '+$PSVersionTable.PSVersion+' · syntax, UTF-8, JSONC, profiles, idempotence, themes, languages, font manifest, responsive layouts and CMD')
 Write-Host ('Fixture: '+$fixture)

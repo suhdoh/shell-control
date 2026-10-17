@@ -23,11 +23,12 @@ function global:Set-TerminalCrt {
     $appearance = Get-ShellTerminalAppearance
     if ($Mode -ne 'status') {
         $settingsPath = (Get-ShellTerminalSettingsPath)
-        $settings = Read-ShellTerminalJson $settingsPath
+        $snapshot=$null
+        $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
         $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
         $enabled = if ($Mode -eq 'toggle') { -not $appearance.CRT } else { $Mode -eq 'on' }
         $profile | Add-Member -NotePropertyName 'experimental.retroTerminalEffect' -NotePropertyValue ([bool]$enabled) -Force
-        [IO.File]::WriteAllText($settingsPath, ($settings | ConvertTo-Json -Depth 50), (New-Object Text.UTF8Encoding($false)))
+        Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
         $appearance = Get-ShellTerminalAppearance
     }
     $state = if ($appearance.CRT) { 'Ein' } else { 'Aus' }
@@ -55,7 +56,8 @@ function global:Set-TerminalTheme {
         [switch]$Reload
     )
     $settingsPath = (Get-ShellTerminalSettingsPath)
-    $settings = Read-ShellTerminalJson $settingsPath
+    $snapshot=$null
+    $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
     if ($Name -in @('list','ls')) {
         $settings.schemes | Sort-Object name | Select-Object -ExpandProperty name
         return
@@ -103,7 +105,7 @@ function global:Set-TerminalTheme {
     if ($scheme.cursorColor) {
         $profile | Add-Member -NotePropertyName cursorColor -NotePropertyValue $scheme.cursorColor -Force
     }
-    [IO.File]::WriteAllText($settingsPath, ($settings | ConvertTo-Json -Depth 50), (New-Object Text.UTF8Encoding($false)))
+    Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
     Write-Host ('Theme: {0} · {1}' -f $scheme.name, $profile.name)
     if ($Reload) { Open-FreshTerminalTab }
 }
@@ -135,7 +137,8 @@ function global:Set-TerminalFont {
     if ($Name -eq 'status') { $choice = $catalog | Where-Object Family -eq $appearance.Font | Select-Object -First 1 }
     if (-not $choice) { throw ('Schrift nicht gefunden: {0}. Auswahl: font list' -f $Name) }
     $settingsPath = (Get-ShellTerminalSettingsPath)
-    $settings = Read-ShellTerminalJson $settingsPath
+    $snapshot=$null
+    $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
     $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
     if (-not $profile.font) { $profile | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) -Force }
     $newSize = if ($PSBoundParameters.ContainsKey('Size')) { $Size } else { $appearance.Size }
@@ -149,7 +152,7 @@ function global:Set-TerminalFont {
     }
     $profile.font | Add-Member -NotePropertyName weight -NotePropertyValue 'normal' -Force
     $profile.font | Add-Member -NotePropertyName builtinGlyphs -NotePropertyValue $true -Force
-    [IO.File]::WriteAllText($settingsPath, ($settings | ConvertTo-Json -Depth 50), (New-Object Text.UTF8Encoding($false)))
+    Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
     Write-Host ('Schrift: {0} · {1} pt · {2}' -f $choice.Family, $newSize, $profile.name)
     if ($Reload) { Open-FreshTerminalTab }
 }

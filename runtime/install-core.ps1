@@ -81,19 +81,20 @@ public static class ShellControlFontApi {
             $receipt+=[pscustomobject]@{Family=$font.Family;Style=$font.Style;Path=$path}
         }
     }
-    [IO.File]::WriteAllText((Join-Path $global:ShellControlRoot 'installed-fonts.json'),($receipt|ConvertTo-Json -Depth 5),(New-Object Text.UTF8Encoding($false)))
+    Write-ShellAtomicText -Path (Join-Path $global:ShellControlRoot 'installed-fonts.json') -Text ($receipt|ConvertTo-Json -Depth 5) -Json
     $result=[UIntPtr]::Zero
     [void][ShellControlFontApi]::SendMessageTimeout([IntPtr]0xffff,0x001D,[UIntPtr]::Zero,[IntPtr]::Zero,2,200,[ref]$result)
     Send-ShellSetupProgress 100 ('Fonts ready: '+$Pack)
 }
 function global:Install-ShellProfiles {
-    param([string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),[string]$BackupRoot=(Join-Path $global:ShellControlRoot ('backups\'+(Get-Date -Format yyyyMMdd-HHmmss))))
+    param([string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),[string]$BackupRoot=(Join-Path $global:ShellControlRoot ('backups\'+(Get-Date -Format yyyyMMdd-HHmmss)+'-'+[guid]::NewGuid().ToString('N'))))
     New-Item -ItemType Directory -Path $BackupRoot -Force|Out-Null
     foreach($version in @('PowerShell','WindowsPowerShell')){
         $folder=Join-Path $DocumentsPath $version
         New-Item -ItemType Directory -Path $folder -Force|Out-Null
         $path=Join-Path $folder 'profile.ps1'
-        $text=[string]$(if(Test-Path -LiteralPath $path){Get-Content -LiteralPath $path -Raw -Encoding UTF8}else{''})
+        $snapshot=Read-ShellTextSnapshot $path
+        $text=$snapshot.Text
         if(Test-Path -LiteralPath $path){Copy-Item -LiteralPath $path -Destination (Join-Path $BackupRoot ($version+'-profile.ps1'))}
         $text=[regex]::Replace($text,'(?ms)^# BEGIN SHELL CONTROL\r?\n.*?^# END SHELL CONTROL\r?\n?','')
         # Migrate this project's earlier direct imports, retaining unrelated user functions.
@@ -101,7 +102,7 @@ function global:Install-ShellProfiles {
         $text=[regex]::Replace($text,"(?m)^\s*\.\s+'"+$legacy+"\\(?:prompt|listing|terminal-controls|system-info|shell-menu|greeting)\.ps1'\s*\r?$",'')
         $entry=(Join-Path $global:ShellControlRoot 'Initialize.ps1').Replace("'","''")
         $block="# BEGIN SHELL CONTROL`r`n. '$entry'`r`n# END SHELL CONTROL`r`n"
-        [IO.File]::WriteAllText($path,($text.TrimEnd()+"`r`n`r`n"+$block),(New-Object Text.UTF8Encoding($true)))
+        Write-ShellAtomicText -Path $path -Text ($text.TrimEnd()+"`r`n`r`n"+$block) -ExpectedHash $snapshot.Hash -Bom
     }
     Send-ShellSetupProgress 100 'PowerShell 5.1, ISE and PowerShell 7 profiles ready'
 }
@@ -111,10 +112,11 @@ function global:Install-ShellTerminal {
         if(-not(Find-ShellExecutable wt.exe)){throw}
         $path=Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'
         New-Item -ItemType Directory -Path (Split-Path $path) -Force|Out-Null
-        [IO.File]::WriteAllText($path,'{"profiles":{"defaults":{},"list":[]},"schemes":[]}',(New-Object Text.UTF8Encoding($false)))
+        Write-ShellAtomicText -Path $path -Text '{"profiles":{"defaults":{},"list":[]},"schemes":[]}' -ExpectedHash 'MISSING' -Json
     }
-    $settings=Read-ShellTerminalJson $path
-    $backup=Join-Path $global:ShellControlRoot ('backups\terminal-'+(Get-Date -Format yyyyMMdd-HHmmss)+'.json')
+    $snapshot=$null
+    $settings=Read-ShellTerminalJson $path -Snapshot ([ref]$snapshot)
+    $backup=Join-Path $global:ShellControlRoot ('backups\terminal-'+(Get-Date -Format yyyyMMdd-HHmmss)+'-'+[guid]::NewGuid().ToString('N')+'.json')
     New-Item -ItemType Directory -Path (Split-Path $backup) -Force|Out-Null
     Copy-Item -LiteralPath $path -Destination $backup
     if(-not $settings.profiles){$settings|Add-Member profiles ([pscustomobject]@{defaults=[pscustomobject]@{};list=@()})}
@@ -140,17 +142,8 @@ function global:Install-ShellTerminal {
         }
         if($SetDefault){$settings|Add-Member -NotePropertyName defaultProfile -NotePropertyValue $profiles[0].guid -Force}
     }
-    [IO.File]::WriteAllText($path,($settings|ConvertTo-Json -Depth 60),(New-Object Text.UTF8Encoding($false)))
+    Write-ShellTerminalSettings -Path $path -Settings $settings -Snapshot $snapshot
     Send-ShellSetupProgress 100 'Terminal themes and profiles ready'
-}
-function global:Read-ShellTerminalJson {
-    param([string]$Path)
-    # Windows Terminal uses JSONC. Strip comments/trailing commas only outside strings.
-    $text=Get-Content -LiteralPath $Path -Raw -Encoding UTF8
-    $pattern='"(?:\\.|[^"\\])*"|(?<comment>//[^\r\n]*|/\*[\s\S]*?\*/)'
-    $clean=[regex]::Replace($text,$pattern,{param($m) if($m.Groups['comment'].Success -or $m.Groups['comma'].Success){''}else{$m.Value}})
-    $clean=[regex]::Replace($clean,'"(?:\\.|[^"\\])*"|(?<comma>,)(?=\s*[}\]])',{param($m) if($m.Groups['comma'].Success){''}else{$m.Value}})
-    $clean|ConvertFrom-Json
 }
 function global:Install-ShellCmd {
     $root=$global:ShellControlRoot
@@ -163,19 +156,29 @@ function global:Install-ShellCmd {
     }
     $entry=Join-Path $root 'cmd-menu.ps1'
     $batch+=('doskey shell-menu=powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "'+$entry+'"')
-    [IO.File]::WriteAllText((Join-Path $root 'cmd-terminal.cmd'),(($batch -join "`r`n")+"`r`n"),(New-Object Text.UTF8Encoding($false)))
+    Write-ShellAtomicText -Path (Join-Path $root 'cmd-terminal.cmd') -Text (($batch -join "`r`n")+"`r`n")
+}
+function global:Get-ShellSetupLaunchParameters {
+    param([ValidateSet('Dependencies','Fonts','Profiles','Terminal')][string]$Component,
+        [ValidateSet('Recommended','All')][string]$Pack='Recommended',[string]$StatusPath,[bool]$IsAdministrator)
+    $arguments=@('-NoLogo','-NoProfile','-ExecutionPolicy','Bypass','-File',('"'+(Join-Path $global:ShellControlRoot 'SetupWorker.ps1')+'"'),'-Root',('"'+$global:ShellControlRoot+'"'),'-Component',$Component,'-Pack',$Pack,'-StatusPath',('"'+$StatusPath+'"'))
+    $launch=@{FilePath=(Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe');ArgumentList=$arguments;WindowStyle='Hidden';PassThru=$true}
+    if($Component -eq 'Dependencies' -and -not $IsAdministrator){$launch.Verb='RunAs'}
+    $launch
 }
 function global:Invoke-ShellSetup {
     param([ValidateSet('Dependencies','Fonts','Profiles','Terminal','All')][string]$Component,[ValidateSet('Recommended','All')][string]$Pack='Recommended')
+    if($Component -eq 'All'){
+        foreach($part in @('Dependencies','Fonts','Profiles','Terminal')){Invoke-ShellSetup -Component $part -Pack $Pack}
+        return
+    }
     $folder=Join-Path $global:ShellControlRoot ('logs\setup-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $folder -Force|Out-Null
-    $arguments=@('-NoLogo','-NoProfile','-ExecutionPolicy','Bypass','-File',('"'+(Join-Path $global:ShellControlRoot 'SetupWorker.ps1')+'"'),'-Root',('"'+$global:ShellControlRoot+'"'),'-Component',$Component,'-Pack',$Pack,'-StatusPath',('"'+(Join-Path $folder 'status.json')+'"'))
-    $params=@{FilePath=(Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe');ArgumentList=$arguments;WindowStyle='Hidden';PassThru=$true}
     $admin=([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-    if($Component -in @('Dependencies','All') -and -not $admin){$params.Verb='RunAs'}
+    $statusPath=Join-Path $folder 'status.json'
+    $params=Get-ShellSetupLaunchParameters -Component $Component -Pack $Pack -StatusPath $statusPath -IsAdministrator $admin
     Show-ShellSetupProgress 0 'Starting setup'
     $process=Start-Process @params
-    $statusPath=Join-Path $folder 'status.json'
     while(-not $process.HasExited){
         if(Test-Path -LiteralPath $statusPath){try{$status=Get-Content $statusPath -Raw -Encoding UTF8|ConvertFrom-Json;Show-ShellSetupProgress $status.Percent $status.Message}catch{}}
         Start-Sleep -Milliseconds 150;$process.Refresh()

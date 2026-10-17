@@ -11,22 +11,26 @@ $ErrorActionPreference='Stop'
 if($env:OS -ne 'Windows_NT'){throw 'Shell Control requires Windows 10/11.'}
 $source=Join-Path $PSScriptRoot 'runtime'
 if(-not(Test-Path -LiteralPath (Join-Path $source 'Initialize.ps1'))){throw 'Extract the complete repository ZIP before running Install.ps1.'}
-$InstallPath=[IO.Path]::GetFullPath($InstallPath)
-if($InstallPath -eq [IO.Path]::GetFullPath($source)){throw 'Choose an installation folder outside the source runtime directory.'}
+. (Join-Path $source 'safe-io.ps1')
+$InstallPath=Assert-ShellInstallTarget -Path $InstallPath -SourceRoot $PSScriptRoot
 New-Item -ItemType Directory -Path $InstallPath -Force|Out-Null
+Write-ShellAtomicText -Path (Join-Path $InstallPath '.shell-control-root') -Text 'ShellControl' -SkipBackup
 $backup=Join-Path $InstallPath ('backups\'+(Get-Date -Format yyyyMMdd-HHmmss)+'-'+[guid]::NewGuid().ToString('N').Substring(0,8))
 New-Item -ItemType Directory -Path $backup -Force|Out-Null
 foreach($file in (Get-ChildItem -LiteralPath $source -File)){
     $destination=Join-Path $InstallPath $file.Name
     if($file.Name -eq 'menu-settings.json' -and (Test-Path -LiteralPath $destination)){continue}
     if(Test-Path -LiteralPath $destination){Copy-Item -LiteralPath $destination -Destination (Join-Path $backup $file.Name) -Force}
-    Copy-Item -LiteralPath $file.FullName -Destination $destination -Force
+    $snapshot=Read-ShellTextSnapshot $destination
+    $sourceBytes=[IO.File]::ReadAllBytes($file.FullName)
+    $withBom=($sourceBytes.Length -ge 3 -and $sourceBytes[0] -eq 239 -and $sourceBytes[1] -eq 187 -and $sourceBytes[2] -eq 191)
+    Write-ShellAtomicText -Path $destination -Text ([IO.File]::ReadAllText($file.FullName)) -ExpectedHash $snapshot.Hash -Bom:$withBom
     Unblock-File -LiteralPath $destination -ErrorAction SilentlyContinue
 }
 $assets=Join-Path $InstallPath 'assets'
 New-Item -ItemType Directory -Path $assets -Force|Out-Null
 Copy-Item -Path (Join-Path $PSScriptRoot 'assets\*') -Destination $assets -Recurse -Force
-foreach($notice in @('LICENSE','THIRD-PARTY.md','FONT-CREDITS.md')){
+foreach($notice in @('LICENSE','THIRD-PARTY.md','FONT-CREDITS.md','SECURITY.md')){
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $notice) -Destination (Join-Path $InstallPath $notice) -Force
 }
 $global:ShellControlRoot=$InstallPath
@@ -54,8 +58,8 @@ try {
     if(-not $NoTerminal){Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles)}
     [void](Update-ShellHardwareCache)
     Send-ShellSetupProgress 100 'Installation completed'
-    $receipt=[pscustomobject]@{Version='0.1.1';Installed=(Get-Date -Format o);Root=$InstallPath;Documents=$DocumentsPath;Backup=$backup;FontPack=$FontPack}
-    [IO.File]::WriteAllText((Join-Path $InstallPath 'installation.json'),($receipt|ConvertTo-Json),(New-Object Text.UTF8Encoding($false)))
+    $receipt=[pscustomobject]@{Version='0.1.2';Installed=(Get-Date -Format o);Root=$InstallPath;Documents=$DocumentsPath;Backup=$backup;FontPack=$FontPack}
+    Write-ShellAtomicText -Path (Join-Path $InstallPath 'installation.json') -Text ($receipt|ConvertTo-Json) -Json
 } finally {
     if($interactive){[Console]::Write("$esc[0m$esc[?25h$esc[?1049l")}
     Write-Progress -Activity 'Shell Control setup' -Completed

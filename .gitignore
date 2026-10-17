@@ -7,3 +7,5 @@ backups/
 logs/
 Cache/
 test-output/
+.shell-control-backups/
+.shell-control-root

@@ -44,9 +44,11 @@ cd shell-control
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1
 ```
 
-Setup installs Windows Terminal, PowerShell 7, Fastfetch, eza, Gum and Oh My Posh. Dependency installation requests one UAC elevation when needed. Fonts and configuration are installed for the current user. Package and font tasks show progress inside the menu.
+Setup installs Windows Terminal, PowerShell 7, Fastfetch, eza, Gum and Oh My Posh. Start setup from a regular, non-administrator terminal. Only the dependency-installation worker requests UAC elevation when needed; font and configuration workers stay in the original user's context. An already elevated parent process passes its elevation to its children. Package and font tasks show progress inside the menu.
 
 The default destination is `%LOCALAPPDATA%\ShellControl`. Existing PowerShell profiles are backed up and supplemented with one managed import block. Existing Terminal profiles are retained; three Shell Control profiles are added for PowerShell 7, Windows PowerShell 5.1 and CMD. ISE loads the shared functions without the console greeting or menu.
+
+Choose a dedicated empty installation directory, or an existing recognized Shell Control installation. Setup rejects drive roots, system directories, populated unrelated folders, source-checkout overlaps and installation paths through junctions or symbolic links.
 
 If both the current-user and machine execution policies prevent local profiles and no organization policy applies, setup enables `RemoteSigned` for the current user. Machine and organization policies are not changed.
 
@@ -73,6 +75,8 @@ shell-menu
 ```
 
 `-NoProfiles`, `-NoTerminal` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained.
+
+Terminal and profile changes use a temporary file followed by replacement, with unique backups in `.shell-control-backups` beside the edited file. Detected changes since reading cause the save to abort rather than overwrite a newer version. These protections do not provide a transaction or automatic rollback for the entire installation. See [SECURITY.md](SECURITY.md) for the scope and remaining limitations.
 
 ## Themes and fonts
 
@@ -111,6 +115,8 @@ In system info, use arrow keys or Page Up / Page Down to scroll, `R` to refresh 
 ```
 
 This removes the managed PowerShell import blocks. Runtime files, fonts, dependencies and Terminal settings are deliberately retained. Restore Terminal settings from the installation's `backups` folder to revert the imported themes and profiles.
+
+The remover only targets imports matching `-InstallPath`. Profile-removal backups and backups from individual menu changes are stored beside their files in `.shell-control-backups`.
 
 ## Development
 

@@ -1,4 +1,5 @@
-﻿function global:Find-ShellExecutable {
+﻿. (Join-Path $PSScriptRoot 'safe-io.ps1')
+function global:Find-ShellExecutable {
     param([string]$Name)
     $command=Get-Command $Name -CommandType Application -ErrorAction SilentlyContinue|Select-Object -First 1
     if($command){return $command.Source}
@@ -34,9 +35,11 @@ function global:Get-ShellControlPreferences {
 }
 function global:Set-ShellControlPreference {
     param([string]$Name,$Value)
-    $settings=Get-ShellControlPreferences
+    $path=Join-Path $global:ShellControlRoot 'menu-settings.json'
+    $snapshot=Read-ShellTextSnapshot $path
+    $settings=if($snapshot.Exists){$snapshot.Text|ConvertFrom-Json -ErrorAction Stop}else{[pscustomobject]@{}}
     $settings|Add-Member -NotePropertyName $Name -NotePropertyValue $Value -Force
-    [IO.File]::WriteAllText((Join-Path $global:ShellControlRoot 'menu-settings.json'),($settings|ConvertTo-Json -Depth 10),(New-Object Text.UTF8Encoding($false)))
+    Write-ShellAtomicText -Path $path -Text ($settings|ConvertTo-Json -Depth 10) -ExpectedHash $snapshot.Hash -Json
 }
 function global:Update-ShellHardwareCache {
     $lan='';$wifi=''
@@ -47,7 +50,7 @@ function global:Update-ShellHardwareCache {
     } catch {}
     $wifi=([string]$wifi).Replace(' High Band Simultaneous (HBS) Network Adapter','').Replace(' Network Adapter','')
     $cache=[pscustomobject]@{Lan=$lan;Wifi=$wifi}
-    [IO.File]::WriteAllText((Join-Path $global:ShellControlRoot 'hardware-cache.json'),($cache|ConvertTo-Json),(New-Object Text.UTF8Encoding($false)))
+    Write-ShellAtomicText -Path (Join-Path $global:ShellControlRoot 'hardware-cache.json') -Text ($cache|ConvertTo-Json) -Json -SkipBackup
     $cache
 }
 function global:Get-ShellHardwareCache {
