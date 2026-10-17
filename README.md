@@ -17,8 +17,6 @@
 
 A compact Windows shell setup with a searchable terminal menu, themed prompts and a hardware overview.
 
-I built this out of laziness: I like good-looking Gum windows and want to customize my terminal however I feel like, without editing config files every time. The defaults just look bad to me. Shell Control puts the things I actually use in one menu, inspired by Charm/Gum and rendered with native PowerShell for Windows.
-
 ```text
 Shell Control
 
@@ -34,7 +32,7 @@ Exit
 
 English is the default display language. Search always accepts English and German. The menu uses its own console renderer for stable input and selection; Gum is installed alongside the other shell tools.
 
-**Contents:** [Install](#install) · [Options](#options) · [Themes & fonts](#themes-and-fonts) · [Commands](#commands) · [Remove integration](#remove-profile-integration) · [Development](#development) · [Credits](#credits)
+**Contents:** [Install](#install) · [Options](#options) · [Themes & fonts](#themes-and-fonts) · [Commands](#commands) · [Remove integration](#remove-profile-integration) · [Development](#development) · [Credits](#credits) · [Why](#why) · [Disclaimer](#disclaimer)
 
 ## Install
 
@@ -128,3 +126,11 @@ Tests use isolated settings and profile fixtures. They do not install programs, 
 I do not own the fonts, third-party tools, icons or upstream theme palettes. Fonts are downloaded from **Nerd Fonts**, with the original typeface authors' copyright and licenses preserved. Thanks to those designers, the Nerd Fonts contributors, Charm and all the projects that make this setup possible.
 
 See [third-party credits](THIRD-PARTY.md) for tools, inspiration and themes, and [font credits](FONT-CREDITS.md) for every supported font package and its original notices. Setup installs these credit documents and notices with the configuration. Shell Control's own code is MIT licensed; third-party components retain their own licenses.
+
+## Why
+
+I built this out of laziness: I like good-looking Gum windows and want to customize my terminal however I feel like, without editing config files every time. The defaults just look bad to me. Shell Control puts the things I actually use in one menu, inspired by Charm/Gum and rendered with native PowerShell for Windows.
+
+## Disclaimer
+
+Shell Control is provided as is, without warranty. Use it at your own risk. To the maximum extent permitted by applicable law, the authors and copyright holders are not liable for claims, damages or other losses arising from its use, including data loss or configuration changes. Nothing here excludes liability that cannot legally be excluded. See the [MIT license](LICENSE) for the full terms. Third-party components remain subject to their own licenses and terms.
