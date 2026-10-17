@@ -1,5 +1,20 @@
 # Shell Control
 
+[![Release](https://img.shields.io/github/v/release/suhdoh/shell-control?label=version&color=d97706)](https://github.com/suhdoh/shell-control/releases/latest)
+[![Windows checks](https://github.com/suhdoh/shell-control/actions/workflows/test.yml/badge.svg)](https://github.com/suhdoh/shell-control/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+![Platform: Windows 10 / 11](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078D4)
+![PowerShell: 5.1 / 7](https://img.shields.io/badge/PowerShell-5.1%20%2F%207-5391FE?logo=powershell&logoColor=white)
+![Menu languages: EN / DE](https://img.shields.io/badge/menu%20languages-EN%20%2F%20DE-629755)
+
+[![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-333333)](https://github.com/microsoft/terminal)
+[![Fastfetch](https://img.shields.io/badge/Fastfetch-4C9A69)](https://github.com/fastfetch-cli/fastfetch)
+[![Oh My Posh](https://img.shields.io/badge/Oh%20My%20Posh-D97706)](https://github.com/JanDeDobbeleer/oh-my-posh)
+[![eza](https://img.shields.io/badge/eza-629755)](https://github.com/eza-community/eza)
+[![Gum](https://img.shields.io/badge/Charm-Gum-FF5FA2)](https://github.com/charmbracelet/gum)
+[![Nerd Fonts](https://img.shields.io/badge/Nerd%20Fonts-85%20families-8B5CF6)](https://github.com/ryanoasis/nerd-fonts)
+[![WinGet](https://img.shields.io/badge/WinGet-0078D4)](https://learn.microsoft.com/windows/package-manager/winget/)
+
 A compact Windows shell setup with a searchable terminal menu, themed prompts and a hardware overview.
 
 ```text
