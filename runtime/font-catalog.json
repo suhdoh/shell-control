@@ -1,0 +1,767 @@
+﻿[
+  {
+    "Shortcut": "term",
+    "Family": "Terminess Nerd Font",
+    "Description": "Pixel-/Retro-Look",
+    "CellWidth": "0.54",
+    "CellHeight": "1",
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "hack",
+    "Family": "Hack Nerd Font Mono",
+    "Description": "Klar und klassisch",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "jetbrains",
+    "Family": "JetBrainsMono NFM",
+    "Description": "Modern, Nerd Font Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "cascadia",
+    "Family": "CaskaydiaMono NFM",
+    "Description": "Cascadia Mono mit Nerd-Symbolen",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5859
+  },
+  {
+    "Shortcut": "plex",
+    "Family": "BlexMono Nerd Font Mono",
+    "Description": "IBM Plex Mono mit Nerd-Symbolen",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "meslo",
+    "Family": "MesloLGM Nerd Font Mono",
+    "Description": "Menlo-/Apple-artiger Look mit Nerd-Symbolen",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "0xproto",
+    "Family": "0xProto Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.62
+  },
+  {
+    "Shortcut": "3270",
+    "Family": "3270 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.54
+  },
+  {
+    "Shortcut": "adwaitamono",
+    "Family": "AdwaitaMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "agave",
+    "Family": "Agave Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "annotationm",
+    "Family": "AnnotationM NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.625
+  },
+  {
+    "Shortcut": "anonymicepro",
+    "Family": "AnonymicePro Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5459
+  },
+  {
+    "Shortcut": "bigbluetermplus",
+    "Family": "BigBlueTermPlus Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6667
+  },
+  {
+    "Shortcut": "bitstromwera",
+    "Family": "BitstromWera Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "caskaydiacove",
+    "Family": "CaskaydiaCove NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5859
+  },
+  {
+    "Shortcut": "codenewroman",
+    "Family": "CodeNewRoman Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5498
+  },
+  {
+    "Shortcut": "commitmono",
+    "Family": "CommitMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "cousine",
+    "Family": "Cousine Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6001
+  },
+  {
+    "Shortcut": "d2kodingligature",
+    "Family": "D2KodingLigature Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "daddytimemono",
+    "Family": "DaddyTimeMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.588
+  },
+  {
+    "Shortcut": "dejavusansm",
+    "Family": "DejaVuSansM Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "departuremono",
+    "Family": "DepartureMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6364
+  },
+  {
+    "Shortcut": "droidsansm",
+    "Family": "DroidSansM Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6001
+  },
+  {
+    "Shortcut": "envycoder",
+    "Family": "EnvyCodeR Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5371
+  },
+  {
+    "Shortcut": "fantasquesansm",
+    "Family": "FantasqueSansM Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5176
+  },
+  {
+    "Shortcut": "firacode",
+    "Family": "FiraCode Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6154
+  },
+  {
+    "Shortcut": "firamono",
+    "Family": "FiraMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "geistmono",
+    "Family": "GeistMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "gohufont11",
+    "Family": "GohuFont 11 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5454
+  },
+  {
+    "Shortcut": "gohufont14",
+    "Family": "GohuFont 14 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5713
+  },
+  {
+    "Shortcut": "gohufontuni11",
+    "Family": "GohuFont uni11 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5454
+  },
+  {
+    "Shortcut": "gohufontuni14",
+    "Family": "GohuFont uni14 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5713
+  },
+  {
+    "Shortcut": "gomono",
+    "Family": "GoMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6001
+  },
+  {
+    "Shortcut": "googlesanscode",
+    "Family": "GoogleSansCode NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "hasklug",
+    "Family": "Hasklug Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "hurmit",
+    "Family": "Hurmit Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.618
+  },
+  {
+    "Shortcut": "imwritingmono",
+    "Family": "iMWritingMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.667
+  },
+  {
+    "Shortcut": "inconsolatalgc",
+    "Family": "Inconsolata LGC Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5986
+  },
+  {
+    "Shortcut": "inconsolata",
+    "Family": "Inconsolata Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "inconsolatago",
+    "Family": "InconsolataGo Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "intonemono",
+    "Family": "IntoneMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.614
+  },
+  {
+    "Shortcut": "iosevka",
+    "Family": "Iosevka NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "iosevkaterm",
+    "Family": "IosevkaTerm NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "iosevkatermslab",
+    "Family": "IosevkaTermSlab NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "jetbrainsmononl",
+    "Family": "JetBrainsMonoNL NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "lilex",
+    "Family": "Lilex Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "literationmono",
+    "Family": "LiterationMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6001
+  },
+  {
+    "Shortcut": "m1code",
+    "Family": "M+1Code Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "mcodelat50",
+    "Family": "M+CodeLat50 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "mcodelat60",
+    "Family": "M+CodeLat60 Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "martianmono",
+    "Family": "MartianMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.7
+  },
+  {
+    "Shortcut": "meslolgl",
+    "Family": "MesloLGL Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "meslolgldz",
+    "Family": "MesloLGLDZ Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "meslolgmdz",
+    "Family": "MesloLGMDZ Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "meslolgs",
+    "Family": "MesloLGS Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "meslolgsdz",
+    "Family": "MesloLGSDZ Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6021
+  },
+  {
+    "Shortcut": "monaspicear",
+    "Family": "MonaspiceAr NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.62
+  },
+  {
+    "Shortcut": "monaspicekr",
+    "Family": "MonaspiceKr NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.62
+  },
+  {
+    "Shortcut": "monaspicene",
+    "Family": "MonaspiceNe NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.62
+  },
+  {
+    "Shortcut": "monaspicern",
+    "Family": "MonaspiceRn NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.62
+  },
+  {
+    "Shortcut": "monaspicexe",
+    "Family": "MonaspiceXe NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.62
+  },
+  {
+    "Shortcut": "monofur",
+    "Family": "Monofur Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "monoid",
+    "Family": "Monoid Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6667
+  },
+  {
+    "Shortcut": "mononoki",
+    "Family": "Mononoki Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5615
+  },
+  {
+    "Shortcut": "notomono",
+    "Family": "NotoMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6001
+  },
+  {
+    "Shortcut": "notosansm",
+    "Family": "NotoSansM NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "opendyslexicm",
+    "Family": "OpenDyslexicM Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.732
+  },
+  {
+    "Shortcut": "overpassm",
+    "Family": "OverpassM Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.616
+  },
+  {
+    "Shortcut": "profontwindows",
+    "Family": "ProFontWindows Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "proggycleance",
+    "Family": "ProggyClean CE Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.4375
+  },
+  {
+    "Shortcut": "proggyclean",
+    "Family": "ProggyClean Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.4375
+  },
+  {
+    "Shortcut": "proggycleansz",
+    "Family": "ProggyCleanSZ Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.4375
+  },
+  {
+    "Shortcut": "recmonocasual",
+    "Family": "RecMonoCasual Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "recmonoduotone",
+    "Family": "RecMonoDuotone Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "recmonolinear",
+    "Family": "RecMonoLinear Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "recmonosmcasual",
+    "Family": "RecMonoSmCasual Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "robotomono",
+    "Family": "RobotoMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6001
+  },
+  {
+    "Shortcut": "saucecodepro",
+    "Family": "SauceCodePro NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.6
+  },
+  {
+    "Shortcut": "shuretechmono",
+    "Family": "ShureTechMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.54
+  },
+  {
+    "Shortcut": "spacemono",
+    "Family": "SpaceMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.612
+  },
+  {
+    "Shortcut": "terminess",
+    "Family": "Terminess Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "ubuntumono",
+    "Family": "UbuntuMono Nerd Font Mono",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  },
+  {
+    "Shortcut": "ubuntusansmono",
+    "Family": "UbuntuSansMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.56
+  },
+  {
+    "Shortcut": "victormono",
+    "Family": "VictorMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5455
+  },
+  {
+    "Shortcut": "zedmono",
+    "Family": "ZedMono NFM",
+    "Description": "Nerd Font · Mono",
+    "CellWidth": null,
+    "CellHeight": null,
+    "Verified": true,
+    "NaturalWidthEm": 0.5
+  }
+]

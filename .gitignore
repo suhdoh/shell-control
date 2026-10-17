@@ -1,0 +1,9 @@
+*.log
+hardware-cache.json
+installation.json
+installed-fonts.json
+Fonts/
+backups/
+logs/
+Cache/
+test-output/

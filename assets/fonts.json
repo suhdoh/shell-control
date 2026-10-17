@@ -1,0 +1,1867 @@
+﻿{
+  "Version": "v3.5.1",
+  "Packages": [
+    {
+      "Name": "0xProto",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/0xProto.tar.xz",
+      "Sha256": "3f2d36e4fa8b3af2f97b14b57c5b0f57f4c1bda5a59533fb913a9ff3344db7ce",
+      "Size": 2275004,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "0xProtoNerdFontMono-Bold.ttf",
+          "Family": "0xProto Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "0xProtoNerdFontMono-Italic.ttf",
+          "Family": "0xProto Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "0xProtoNerdFontMono-Regular.ttf",
+          "Family": "0xProto Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "3270",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/3270.tar.xz",
+      "Sha256": "0be3de53807798fc5bdca90eb972225b0b3880bdd9b505121b3c06750a08b698",
+      "Size": 5127512,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "3270NerdFontMono-Regular.ttf",
+          "Family": "3270 Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "AdwaitaMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/AdwaitaMono.tar.xz",
+      "Sha256": "409118887ec166a2342c184ade6734faf5d236a097742cb7085ff42826a1dd94",
+      "Size": 3567360,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "AdwaitaMonoNerdFontMono-Bold.ttf",
+          "Family": "AdwaitaMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "AdwaitaMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "AdwaitaMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "AdwaitaMonoNerdFontMono-Italic.ttf",
+          "Family": "AdwaitaMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "AdwaitaMonoNerdFontMono-Regular.ttf",
+          "Family": "AdwaitaMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Agave",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Agave.tar.xz",
+      "Sha256": "0b29420ed47a4cc9bc2743d454ef17ea645ae31e6c348e86154d994b6ccc756e",
+      "Size": 2429244,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "AgaveNerdFontMono-Bold.ttf",
+          "Family": "Agave Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "AgaveNerdFontMono-Regular.ttf",
+          "Family": "Agave Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "AnnotationMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/AnnotationMono.tar.xz",
+      "Sha256": "bae334fde071ee7450cc8bbdc20fc5663a81466dce54d66f93815a48f59a308c",
+      "Size": 2868176,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "AnnotationMNerdFontMono-Bold.ttf",
+          "Family": "AnnotationM NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "AnnotationMNerdFontMono-BoldItalic.ttf",
+          "Family": "AnnotationM NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "AnnotationMNerdFontMono-Italic.ttf",
+          "Family": "AnnotationM NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "AnnotationMNerdFontMono-Regular.ttf",
+          "Family": "AnnotationM NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "AnonymousPro",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/AnonymousPro.tar.xz",
+      "Sha256": "f84f067b4de991a14afdbd498e106239c429a553a27e76a364048638f2e1de70",
+      "Size": 2526408,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "AnonymiceProNerdFontMono-Bold.ttf",
+          "Family": "AnonymicePro Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "AnonymiceProNerdFontMono-BoldItalic.ttf",
+          "Family": "AnonymicePro Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "AnonymiceProNerdFontMono-Italic.ttf",
+          "Family": "AnonymicePro Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "AnonymiceProNerdFontMono-Regular.ttf",
+          "Family": "AnonymicePro Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "BigBlueTerminal",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/BigBlueTerminal.tar.xz",
+      "Sha256": "5c2589a37394459fe2207a6e46ccb5c37a978c51c6a5a2f92985a1356be27846",
+      "Size": 2163648,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "BigBlueTermPlusNerdFontMono-Regular.ttf",
+          "Family": "BigBlueTermPlus Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "BitstreamVeraSansMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/BitstreamVeraSansMono.tar.xz",
+      "Sha256": "a4827daaa24be2d8f7831b5a65b493fa3ec8e1e92a5076104d8377f94f1b3ada",
+      "Size": 2498960,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "BitstromWeraNerdFontMono-Bold.ttf",
+          "Family": "BitstromWera Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "BitstromWeraNerdFontMono-Regular.ttf",
+          "Family": "BitstromWera Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "CascadiaCode",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CascadiaCode.tar.xz",
+      "Sha256": "ae598e9401e2846aa3ee364513715de0490b844a4b54f0768991f45f23aa8369",
+      "Size": 3592604,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "CaskaydiaCoveNerdFontMono-Bold.ttf",
+          "Family": "CaskaydiaCove NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "CaskaydiaCoveNerdFontMono-BoldItalic.ttf",
+          "Family": "CaskaydiaCove NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "CaskaydiaCoveNerdFontMono-Italic.ttf",
+          "Family": "CaskaydiaCove NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "CaskaydiaCoveNerdFontMono-Regular.ttf",
+          "Family": "CaskaydiaCove NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "CascadiaMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CascadiaMono.tar.xz",
+      "Sha256": "e4fe0248bbe2558e907d26b55ed287403972f946239a4ea3f7a8afd3365ad6ba",
+      "Size": 3577856,
+      "Recommended": true,
+      "Fonts": [
+        {
+          "File": "CaskaydiaMonoNerdFontMono-Bold.ttf",
+          "Family": "CaskaydiaMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "CaskaydiaMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "CaskaydiaMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "CaskaydiaMonoNerdFontMono-Italic.ttf",
+          "Family": "CaskaydiaMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "CaskaydiaMonoNerdFontMono-Regular.ttf",
+          "Family": "CaskaydiaMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "CodeNewRoman",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CodeNewRoman.tar.xz",
+      "Sha256": "eb902759ff5bc6c4011821c566f4001139c7c571abeb8990f3a3cdfdf661da4e",
+      "Size": 4687384,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "CodeNewRomanNerdFontMono-Bold.otf",
+          "Family": "CodeNewRoman Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "CodeNewRomanNerdFontMono-Italic.otf",
+          "Family": "CodeNewRoman Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "CodeNewRomanNerdFontMono-Regular.otf",
+          "Family": "CodeNewRoman Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "CommitMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/CommitMono.tar.xz",
+      "Sha256": "7ee1e16909f0fd05cee30db4299753c33a6134c418c828d6d8523d246ee3f836",
+      "Size": 2712752,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "CommitMonoNerdFontMono-Bold.otf",
+          "Family": "CommitMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "CommitMonoNerdFontMono-BoldItalic.otf",
+          "Family": "CommitMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "CommitMonoNerdFontMono-Italic.otf",
+          "Family": "CommitMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "CommitMonoNerdFontMono-Regular.otf",
+          "Family": "CommitMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Cousine",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Cousine.tar.xz",
+      "Sha256": "4fdef49cf4f77b5ba96be58f6304239573b8f679bc64af4a4ea423d5d09c5c33",
+      "Size": 2816276,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "CousineNerdFontMono-Bold.ttf",
+          "Family": "Cousine Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "CousineNerdFontMono-BoldItalic.ttf",
+          "Family": "Cousine Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "CousineNerdFontMono-Italic.ttf",
+          "Family": "Cousine Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "CousineNerdFontMono-Regular.ttf",
+          "Family": "Cousine Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "D2Coding",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/D2Coding.tar.xz",
+      "Sha256": "acdc66f5df6e64a7e1d41f89930b163da5345cf45f7dd08e41a98da255002c95",
+      "Size": 5351588,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "D2KodingLigatureNerdFontMono-Bold.ttf",
+          "Family": "D2KodingLigature Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "D2KodingLigatureNerdFontMono-Regular.ttf",
+          "Family": "D2KodingLigature Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "DaddyTimeMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/DaddyTimeMono.tar.xz",
+      "Sha256": "d5c67428e6aefe687e3400e5086ff5ad5c5b0c166388a67ba0e94a57a9cc154e",
+      "Size": 2218680,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "DaddyTimeMonoNerdFontMono-Regular.ttf",
+          "Family": "DaddyTimeMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "DejaVuSansMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/DejaVuSansMono.tar.xz",
+      "Sha256": "9d3f2d60faa790b101903c2984b89c11397fc63b9ce43f2dcd25ffed4fb44e5f",
+      "Size": 2834408,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "DejaVuSansMNerdFontMono-Bold.ttf",
+          "Family": "DejaVuSansM Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "DejaVuSansMNerdFontMono-Regular.ttf",
+          "Family": "DejaVuSansM Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "DepartureMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/DepartureMono.tar.xz",
+      "Sha256": "7d2d86db20730e26ee4fc926e3c64429d6f9da6fce91e74c325fe1c5ee74d9ee",
+      "Size": 2055128,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "DepartureMonoNerdFontMono-Regular.otf",
+          "Family": "DepartureMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "DroidSansMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/DroidSansMono.tar.xz",
+      "Sha256": "8e383ba1fde4e413996dcf47fbfaecbf544a7de940147a03af61fccd9ec9b8c4",
+      "Size": 2577052,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "DroidSansMNerdFontMono-Regular.otf",
+          "Family": "DroidSansM Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "EnvyCodeR",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/EnvyCodeR.tar.xz",
+      "Sha256": "911b420bed40268b4eb3c8fc1aedb1ccf498c3496dff645d72a5995f1e65a9a3",
+      "Size": 2422468,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "EnvyCodeRNerdFontMono-Bold.ttf",
+          "Family": "EnvyCodeR Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "EnvyCodeRNerdFontMono-Italic.ttf",
+          "Family": "EnvyCodeR Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "EnvyCodeRNerdFontMono-Regular.ttf",
+          "Family": "EnvyCodeR Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "FantasqueSansMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/FantasqueSansMono.tar.xz",
+      "Sha256": "e7e0d7bd558a4e1cc0b448b8dfc6ae0bb7977683aaab6ddab24761e274d0a3dc",
+      "Size": 2678608,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "FantasqueSansMNerdFontMono-Bold.ttf",
+          "Family": "FantasqueSansM Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "FantasqueSansMNerdFontMono-BoldItalic.ttf",
+          "Family": "FantasqueSansM Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "FantasqueSansMNerdFontMono-Italic.ttf",
+          "Family": "FantasqueSansM Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "FantasqueSansMNerdFontMono-Regular.ttf",
+          "Family": "FantasqueSansM Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "FiraCode",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/FiraCode.tar.xz",
+      "Sha256": "68e3bd6164864b8b514605bc34e3a87ac401c8c48682fcce6478c70263340207",
+      "Size": 3061404,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "FiraCodeNerdFontMono-Bold.ttf",
+          "Family": "FiraCode Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "FiraCodeNerdFontMono-Regular.ttf",
+          "Family": "FiraCode Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "FiraMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/FiraMono.tar.xz",
+      "Sha256": "e3112075b65d9a900ef6ca562c30f1b5eb1d1a928e97de7469962ac8c45e93d6",
+      "Size": 2717120,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "FiraMonoNerdFontMono-Bold.otf",
+          "Family": "FiraMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "FiraMonoNerdFontMono-Regular.otf",
+          "Family": "FiraMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "GeistMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/GeistMono.tar.xz",
+      "Sha256": "d3ba4a7418cde16963fda0caa4f7ae866c509e0a864ec21e393455e1906e070c",
+      "Size": 5268020,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "GeistMonoNerdFontMono-Bold.otf",
+          "Family": "GeistMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "GeistMonoNerdFontMono-BoldItalic.otf",
+          "Family": "GeistMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "GeistMonoNerdFontMono-Italic.otf",
+          "Family": "GeistMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "GeistMonoNerdFontMono-Regular.otf",
+          "Family": "GeistMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Go-Mono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Go-Mono.tar.xz",
+      "Sha256": "d993c556cf0e7c4b2455628063a5adb441b3517a297783185c262d77900d70dd",
+      "Size": 2578872,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "GoMonoNerdFontMono-Bold.ttf",
+          "Family": "GoMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "GoMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "GoMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "GoMonoNerdFontMono-Italic.ttf",
+          "Family": "GoMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "GoMonoNerdFontMono-Regular.ttf",
+          "Family": "GoMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Gohu",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Gohu.tar.xz",
+      "Sha256": "b56a359a7562beebcc443d2a1c3f57a29e1ac7ffb47da17eca1fa028a0017b5a",
+      "Size": 3750900,
+      "Recommended": true,
+      "Fonts": [
+        {
+          "File": "GohuFont11NerdFontMono-Regular.ttf",
+          "Family": "GohuFont 11 Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "GohuFont14NerdFontMono-Regular.ttf",
+          "Family": "GohuFont 14 Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "GohuFontuni11NerdFontMono-Regular.ttf",
+          "Family": "GohuFont uni11 Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "GohuFontuni14NerdFontMono-Regular.ttf",
+          "Family": "GohuFont uni14 Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "GoogleSansCode",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/GoogleSansCode.tar.xz",
+      "Sha256": "b5a2a79b6ac0f021049c63b67bb42a1dcf81d5bc4e447fc6205c79d969605f42",
+      "Size": 2894120,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "GoogleSansCodeNerdFontMono-Bold.ttf",
+          "Family": "GoogleSansCode NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "GoogleSansCodeNerdFontMono-BoldItalic.ttf",
+          "Family": "GoogleSansCode NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "GoogleSansCodeNerdFontMono-Italic.ttf",
+          "Family": "GoogleSansCode NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "GoogleSansCodeNerdFontMono-Regular.ttf",
+          "Family": "GoogleSansCode NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Hack",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Hack.tar.xz",
+      "Sha256": "cdd389472e10e2261520140ff1b382b4f8a226af5fd0b2735b975d31151d9c3c",
+      "Size": 2781192,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "HackNerdFontMono-Bold.ttf",
+          "Family": "Hack Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "HackNerdFontMono-BoldItalic.ttf",
+          "Family": "Hack Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "HackNerdFontMono-Italic.ttf",
+          "Family": "Hack Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "HackNerdFontMono-Regular.ttf",
+          "Family": "Hack Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Hasklig",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Hasklig.tar.xz",
+      "Sha256": "25f73bb44cf786939f6fe13914ce220ac0d8a1ffde7fc7ee87090854c0f3d83c",
+      "Size": 4934340,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "HasklugNerdFontMono-Bold.otf",
+          "Family": "Hasklug Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "HasklugNerdFontMono-BoldItalic.otf",
+          "Family": "Hasklug Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "HasklugNerdFontMono-Italic.otf",
+          "Family": "Hasklug Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "HasklugNerdFontMono-Regular.otf",
+          "Family": "Hasklug Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Hermit",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Hermit.tar.xz",
+      "Sha256": "61c1a9e87216eb25b69171cd8f39098be86306ebdf65b3b3a273192f3a3bbbb0",
+      "Size": 2816424,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "HurmitNerdFontMono-Bold.otf",
+          "Family": "Hurmit Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "HurmitNerdFontMono-BoldItalic.otf",
+          "Family": "Hurmit Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "HurmitNerdFontMono-Italic.otf",
+          "Family": "Hurmit Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "HurmitNerdFontMono-Regular.otf",
+          "Family": "Hurmit Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "IBMPlexMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/IBMPlexMono.tar.xz",
+      "Sha256": "3d226683be9fc35f98683837568497f300307bc9b7aefc1617a368f190ef963a",
+      "Size": 3172456,
+      "Recommended": true,
+      "Fonts": [
+        {
+          "File": "BlexMonoNerdFontMono-Bold.ttf",
+          "Family": "BlexMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "BlexMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "BlexMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "BlexMonoNerdFontMono-Italic.ttf",
+          "Family": "BlexMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "BlexMonoNerdFontMono-Regular.ttf",
+          "Family": "BlexMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Inconsolata",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Inconsolata.tar.xz",
+      "Sha256": "be1903b0016d398e3dc5b25814438b8d0fa44ca9e0ac5d9775130f406345d586",
+      "Size": 2151920,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "InconsolataNerdFontMono-Bold.ttf",
+          "Family": "Inconsolata Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "InconsolataNerdFontMono-Regular.ttf",
+          "Family": "Inconsolata Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "InconsolataGo",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/InconsolataGo.tar.xz",
+      "Sha256": "479de68fc16fc0c12de1ae1d27bf76a459a072ece092cfc3a440b6d58f7d2700",
+      "Size": 4220952,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "InconsolataGoNerdFontMono-Bold.ttf",
+          "Family": "InconsolataGo Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "InconsolataGoNerdFontMono-Regular.ttf",
+          "Family": "InconsolataGo Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "InconsolataLGC",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/InconsolataLGC.tar.xz",
+      "Sha256": "a44973ed4ae5989d07a61783febfe9ea558b14f19f9484b74f2f9f20f597b4e3",
+      "Size": 2457516,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "InconsolataLGCNerdFontMono-Bold.ttf",
+          "Family": "Inconsolata LGC Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "InconsolataLGCNerdFontMono-BoldItalic.ttf",
+          "Family": "Inconsolata LGC Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "InconsolataLGCNerdFontMono-Italic.ttf",
+          "Family": "Inconsolata LGC Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "InconsolataLGCNerdFontMono-Regular.ttf",
+          "Family": "Inconsolata LGC Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "IntelOneMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/IntelOneMono.tar.xz",
+      "Sha256": "792614cd446b3044e8043abab487cc604233b307a49ee61460b57bdc97b90f39",
+      "Size": 2523236,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "IntoneMonoNerdFontMono-Bold.ttf",
+          "Family": "IntoneMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "IntoneMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "IntoneMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "IntoneMonoNerdFontMono-Italic.ttf",
+          "Family": "IntoneMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "IntoneMonoNerdFontMono-Regular.ttf",
+          "Family": "IntoneMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Iosevka",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Iosevka.tar.xz",
+      "Sha256": "3b94ea1dc3955756762f977b7677bca671947dd56bc755a6f8465a8e83b5f257",
+      "Size": 91681912,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "IosevkaNerdFontMono-Bold.ttf",
+          "Family": "Iosevka NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "IosevkaNerdFontMono-BoldItalic.ttf",
+          "Family": "Iosevka NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "IosevkaNerdFontMono-Italic.ttf",
+          "Family": "Iosevka NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "IosevkaNerdFontMono-Regular.ttf",
+          "Family": "Iosevka NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "IosevkaTerm",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/IosevkaTerm.tar.xz",
+      "Sha256": "054a4a369cdcc5d57e9bc91ea56dfefd66c71c253dcb0c0d7b72c0810373da26",
+      "Size": 91698196,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "IosevkaTermNerdFontMono-Bold.ttf",
+          "Family": "IosevkaTerm NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "IosevkaTermNerdFontMono-BoldItalic.ttf",
+          "Family": "IosevkaTerm NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "IosevkaTermNerdFontMono-Italic.ttf",
+          "Family": "IosevkaTerm NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "IosevkaTermNerdFontMono-Regular.ttf",
+          "Family": "IosevkaTerm NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "IosevkaTermSlab",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/IosevkaTermSlab.tar.xz",
+      "Sha256": "a31b73c260b5466a534c0a5e53e97b871353a93d19f37a5a522d11218313f95f",
+      "Size": 55901188,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "IosevkaTermSlabNerdFontMono-Bold.ttf",
+          "Family": "IosevkaTermSlab NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "IosevkaTermSlabNerdFontMono-BoldItalic.ttf",
+          "Family": "IosevkaTermSlab NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "IosevkaTermSlabNerdFontMono-Italic.ttf",
+          "Family": "IosevkaTermSlab NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "IosevkaTermSlabNerdFontMono-Regular.ttf",
+          "Family": "IosevkaTermSlab NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "JetBrainsMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/JetBrainsMono.tar.xz",
+      "Sha256": "04d5e8f903693f9dd13e16f867e994834e681eb3c72c0d337a770dcda09010cf",
+      "Size": 7284244,
+      "Recommended": true,
+      "Fonts": [
+        {
+          "File": "JetBrainsMonoNerdFontMono-Bold.ttf",
+          "Family": "JetBrainsMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "JetBrainsMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "JetBrainsMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "JetBrainsMonoNerdFontMono-Italic.ttf",
+          "Family": "JetBrainsMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "JetBrainsMonoNerdFontMono-Regular.ttf",
+          "Family": "JetBrainsMono NFM",
+          "Style": "Regular"
+        },
+        {
+          "File": "JetBrainsMonoNLNerdFontMono-Bold.ttf",
+          "Family": "JetBrainsMonoNL NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "JetBrainsMonoNLNerdFontMono-BoldItalic.ttf",
+          "Family": "JetBrainsMonoNL NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "JetBrainsMonoNLNerdFontMono-Italic.ttf",
+          "Family": "JetBrainsMonoNL NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "JetBrainsMonoNLNerdFontMono-Regular.ttf",
+          "Family": "JetBrainsMonoNL NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "LiberationMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/LiberationMono.tar.xz",
+      "Sha256": "1106e496fb06fdc9bfc472c51191b5336cb56250952593f806486196efb71a66",
+      "Size": 4791708,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "LiterationMonoNerdFontMono-Bold.ttf",
+          "Family": "LiterationMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "LiterationMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "LiterationMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "LiterationMonoNerdFontMono-Italic.ttf",
+          "Family": "LiterationMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "LiterationMonoNerdFontMono-Regular.ttf",
+          "Family": "LiterationMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Lilex",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Lilex.tar.xz",
+      "Sha256": "34ba9564bcb32c03d2d8e1404e72c5c4320fa99231ba99f4c566a24224f350a3",
+      "Size": 2874416,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "LilexNerdFontMono-Bold.ttf",
+          "Family": "Lilex Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "LilexNerdFontMono-BoldItalic.ttf",
+          "Family": "Lilex Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "LilexNerdFontMono-Italic.ttf",
+          "Family": "Lilex Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "LilexNerdFontMono-Regular.ttf",
+          "Family": "Lilex Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "MPlus",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/MPlus.tar.xz",
+      "Sha256": "e159e842616b340d88e402524a1f78795bb36e445a2c54967900fc462fa602dd",
+      "Size": 22565836,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "M+1CodeNerdFontMono-Bold.ttf",
+          "Family": "M+1Code Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "M+1CodeNerdFontMono-Regular.ttf",
+          "Family": "M+1Code Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "M+CodeLat50NerdFontMono-Bold.ttf",
+          "Family": "M+CodeLat50 Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "M+CodeLat50NerdFontMono-Regular.ttf",
+          "Family": "M+CodeLat50 Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "M+CodeLat60NerdFontMono-Bold.ttf",
+          "Family": "M+CodeLat60 Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "M+CodeLat60NerdFontMono-Regular.ttf",
+          "Family": "M+CodeLat60 Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "MartianMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/MartianMono.tar.xz",
+      "Sha256": "804a5a458856725d45a03d96a778349e8c3c9a4a45f5df023f294e196fbe88f2",
+      "Size": 3325184,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "MartianMonoNerdFontMono-Bold.ttf",
+          "Family": "MartianMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "MartianMonoNerdFontMono-Regular.ttf",
+          "Family": "MartianMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Meslo",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Meslo.tar.xz",
+      "Sha256": "6b6624632dc6873dfb7681c3f818e7c01ab601ab707690b6440933bbe57e2b11",
+      "Size": 5241168,
+      "Recommended": true,
+      "Fonts": [
+        {
+          "File": "MesloLGLDZNerdFontMono-Bold.ttf",
+          "Family": "MesloLGLDZ Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MesloLGLDZNerdFontMono-BoldItalic.ttf",
+          "Family": "MesloLGLDZ Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MesloLGLDZNerdFontMono-Italic.ttf",
+          "Family": "MesloLGLDZ Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MesloLGLDZNerdFontMono-Regular.ttf",
+          "Family": "MesloLGLDZ Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "MesloLGLNerdFontMono-Bold.ttf",
+          "Family": "MesloLGL Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MesloLGLNerdFontMono-BoldItalic.ttf",
+          "Family": "MesloLGL Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MesloLGLNerdFontMono-Italic.ttf",
+          "Family": "MesloLGL Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MesloLGLNerdFontMono-Regular.ttf",
+          "Family": "MesloLGL Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "MesloLGMDZNerdFontMono-Bold.ttf",
+          "Family": "MesloLGMDZ Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MesloLGMDZNerdFontMono-BoldItalic.ttf",
+          "Family": "MesloLGMDZ Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MesloLGMDZNerdFontMono-Italic.ttf",
+          "Family": "MesloLGMDZ Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MesloLGMDZNerdFontMono-Regular.ttf",
+          "Family": "MesloLGMDZ Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "MesloLGMNerdFontMono-Bold.ttf",
+          "Family": "MesloLGM Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MesloLGMNerdFontMono-BoldItalic.ttf",
+          "Family": "MesloLGM Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MesloLGMNerdFontMono-Italic.ttf",
+          "Family": "MesloLGM Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MesloLGMNerdFontMono-Regular.ttf",
+          "Family": "MesloLGM Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "MesloLGSDZNerdFontMono-Bold.ttf",
+          "Family": "MesloLGSDZ Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MesloLGSDZNerdFontMono-BoldItalic.ttf",
+          "Family": "MesloLGSDZ Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MesloLGSDZNerdFontMono-Italic.ttf",
+          "Family": "MesloLGSDZ Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MesloLGSDZNerdFontMono-Regular.ttf",
+          "Family": "MesloLGSDZ Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "MesloLGSNerdFontMono-Bold.ttf",
+          "Family": "MesloLGS Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MesloLGSNerdFontMono-BoldItalic.ttf",
+          "Family": "MesloLGS Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MesloLGSNerdFontMono-Italic.ttf",
+          "Family": "MesloLGS Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MesloLGSNerdFontMono-Regular.ttf",
+          "Family": "MesloLGS Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Monaspace",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Monaspace.tar.xz",
+      "Sha256": "7cdb44b7cd3855a231641b3cc4cf38f434d615d12e1c475eb86232868c667dc0",
+      "Size": 19257096,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "MonaspiceArNerdFontMono-Bold.otf",
+          "Family": "MonaspiceAr NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonaspiceArNerdFontMono-BoldItalic.otf",
+          "Family": "MonaspiceAr NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MonaspiceArNerdFontMono-Italic.otf",
+          "Family": "MonaspiceAr NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonaspiceArNerdFontMono-Regular.otf",
+          "Family": "MonaspiceAr NFM",
+          "Style": "Regular"
+        },
+        {
+          "File": "MonaspiceKrNerdFontMono-Bold.otf",
+          "Family": "MonaspiceKr NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonaspiceKrNerdFontMono-BoldItalic.otf",
+          "Family": "MonaspiceKr NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MonaspiceKrNerdFontMono-Italic.otf",
+          "Family": "MonaspiceKr NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonaspiceKrNerdFontMono-Regular.otf",
+          "Family": "MonaspiceKr NFM",
+          "Style": "Regular"
+        },
+        {
+          "File": "MonaspiceNeNerdFontMono-Bold.otf",
+          "Family": "MonaspiceNe NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonaspiceNeNerdFontMono-BoldItalic.otf",
+          "Family": "MonaspiceNe NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MonaspiceNeNerdFontMono-Italic.otf",
+          "Family": "MonaspiceNe NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonaspiceNeNerdFontMono-Regular.otf",
+          "Family": "MonaspiceNe NFM",
+          "Style": "Regular"
+        },
+        {
+          "File": "MonaspiceRnNerdFontMono-Bold.otf",
+          "Family": "MonaspiceRn NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonaspiceRnNerdFontMono-BoldItalic.otf",
+          "Family": "MonaspiceRn NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MonaspiceRnNerdFontMono-Italic.otf",
+          "Family": "MonaspiceRn NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonaspiceRnNerdFontMono-Regular.otf",
+          "Family": "MonaspiceRn NFM",
+          "Style": "Regular"
+        },
+        {
+          "File": "MonaspiceXeNerdFontMono-Bold.otf",
+          "Family": "MonaspiceXe NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonaspiceXeNerdFontMono-BoldItalic.otf",
+          "Family": "MonaspiceXe NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MonaspiceXeNerdFontMono-Italic.otf",
+          "Family": "MonaspiceXe NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonaspiceXeNerdFontMono-Regular.otf",
+          "Family": "MonaspiceXe NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Monofur",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Monofur.tar.xz",
+      "Sha256": "2df31b59b5144b335de6895e6f841cedfd5c2e336b3b08b004033515e4003be9",
+      "Size": 2674020,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "MonofurNerdFontMono-Bold.ttf",
+          "Family": "Monofur Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonofurNerdFontMono-Italic.ttf",
+          "Family": "Monofur Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonofurNerdFontMono-Regular.ttf",
+          "Family": "Monofur Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Monoid",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Monoid.tar.xz",
+      "Sha256": "235d997cb92171296eab51871824a9c0d1a673a01f89a88312e1c0540ae3030d",
+      "Size": 2385388,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "MonoidNerdFontMono-Bold.ttf",
+          "Family": "Monoid Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MonoidNerdFontMono-Italic.ttf",
+          "Family": "Monoid Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MonoidNerdFontMono-Regular.ttf",
+          "Family": "Monoid Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Mononoki",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Mononoki.tar.xz",
+      "Sha256": "84cf96bf81645f97eb11a410e6febad864784a0a254bba4a348d6ff9665a0114",
+      "Size": 2337792,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "MononokiNerdFontMono-Bold.ttf",
+          "Family": "Mononoki Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "MononokiNerdFontMono-BoldItalic.ttf",
+          "Family": "Mononoki Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "MononokiNerdFontMono-Italic.ttf",
+          "Family": "Mononoki Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "MononokiNerdFontMono-Regular.ttf",
+          "Family": "Mononoki Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Noto",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Noto.tar.xz",
+      "Sha256": "818deb4370c71315986b7d7a92c0dc508dd785a8d57f7cdfa871397a3a3834ab",
+      "Size": 72554252,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "NotoMonoNerdFontMono-Regular.ttf",
+          "Family": "NotoMono NFM",
+          "Style": "Regular"
+        },
+        {
+          "File": "NotoSansMNerdFontMono-Bold.ttf",
+          "Family": "NotoSansM NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "NotoSansMNerdFontMono-Regular.ttf",
+          "Family": "NotoSansM NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "OpenDyslexic",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/OpenDyslexic.tar.xz",
+      "Sha256": "5f3b8c84ea93982c28fa11d74a6b7e9d90f13f6eb3e228c4603007d9c62aea78",
+      "Size": 3532612,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "OpenDyslexicMNerdFontMono-Regular.otf",
+          "Family": "OpenDyslexicM Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Overpass",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Overpass.tar.xz",
+      "Sha256": "ee7b45d4dc481371cac12d0de5c2408826c21f3031b2ef826fb157d077f7353d",
+      "Size": 4776028,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "OverpassMNerdFontMono-Bold.otf",
+          "Family": "OverpassM Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "OverpassMNerdFontMono-Regular.otf",
+          "Family": "OverpassM Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "ProFont",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/ProFont.tar.xz",
+      "Sha256": "186917bff8fe3d7aaf6a0151e7caf76ef2962f2dd825454dc42c3c7285c8f821",
+      "Size": 3835940,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "ProFontWindowsNerdFontMono-Regular.ttf",
+          "Family": "ProFontWindows Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "ProggyClean",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/ProggyClean.tar.xz",
+      "Sha256": "b7c0b6d558f92764fa26481d557ef867e6608e932d951a2aa8705b9fc6a50fd6",
+      "Size": 2423052,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "ProggyCleanCENerdFontMono-Regular.ttf",
+          "Family": "ProggyClean CE Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "ProggyCleanNerdFontMono-Regular.ttf",
+          "Family": "ProggyClean Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "ProggyCleanSZNerdFontMono-Regular.ttf",
+          "Family": "ProggyCleanSZ Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Recursive",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Recursive.tar.xz",
+      "Sha256": "fb1e116c950b021c42235345a23380b4516b8bb318c57ab0085bdb33068feb56",
+      "Size": 3819032,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "RecMonoCasualNerdFontMono-Bold.ttf",
+          "Family": "RecMonoCasual Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "RecMonoCasualNerdFontMono-BoldItalic.ttf",
+          "Family": "RecMonoCasual Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "RecMonoCasualNerdFontMono-Italic.ttf",
+          "Family": "RecMonoCasual Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "RecMonoCasualNerdFontMono-Regular.ttf",
+          "Family": "RecMonoCasual Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "RecMonoDuotoneNerdFontMono-Bold.ttf",
+          "Family": "RecMonoDuotone Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "RecMonoDuotoneNerdFontMono-BoldItalic.ttf",
+          "Family": "RecMonoDuotone Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "RecMonoDuotoneNerdFontMono-Italic.ttf",
+          "Family": "RecMonoDuotone Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "RecMonoDuotoneNerdFontMono-Regular.ttf",
+          "Family": "RecMonoDuotone Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "RecMonoLinearNerdFontMono-Bold.ttf",
+          "Family": "RecMonoLinear Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "RecMonoLinearNerdFontMono-BoldItalic.ttf",
+          "Family": "RecMonoLinear Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "RecMonoLinearNerdFontMono-Italic.ttf",
+          "Family": "RecMonoLinear Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "RecMonoLinearNerdFontMono-Regular.ttf",
+          "Family": "RecMonoLinear Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "RecMonoSmCasualNerdFontMono-Bold.ttf",
+          "Family": "RecMonoSmCasual Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "RecMonoSmCasualNerdFontMono-BoldItalic.ttf",
+          "Family": "RecMonoSmCasual Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "RecMonoSmCasualNerdFontMono-Italic.ttf",
+          "Family": "RecMonoSmCasual Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "RecMonoSmCasualNerdFontMono-Regular.ttf",
+          "Family": "RecMonoSmCasual Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "RobotoMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/RobotoMono.tar.xz",
+      "Sha256": "61f53438b240a00c87c92dc2c372db0bbb264473b36a8144ea62babf787f8383",
+      "Size": 4188612,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "RobotoMonoNerdFontMono-Bold.ttf",
+          "Family": "RobotoMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "RobotoMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "RobotoMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "RobotoMonoNerdFontMono-Italic.ttf",
+          "Family": "RobotoMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "RobotoMonoNerdFontMono-Regular.ttf",
+          "Family": "RobotoMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "ShareTechMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/ShareTechMono.tar.xz",
+      "Sha256": "002de1c65aa0b1d61e71ff91ec3afc45a88cfeed26433796f00c8d264be66ffa",
+      "Size": 2058628,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "ShureTechMonoNerdFontMono-Regular.ttf",
+          "Family": "ShureTechMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "SourceCodePro",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/SourceCodePro.tar.xz",
+      "Sha256": "50ead7bb7addce27cf4b55f4fffb669b5f1899fece675fad623a2a75a478c8c7",
+      "Size": 3308312,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "SauceCodeProNerdFontMono-Bold.ttf",
+          "Family": "SauceCodePro NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "SauceCodeProNerdFontMono-BoldItalic.ttf",
+          "Family": "SauceCodePro NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "SauceCodeProNerdFontMono-Italic.ttf",
+          "Family": "SauceCodePro NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "SauceCodeProNerdFontMono-Regular.ttf",
+          "Family": "SauceCodePro NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "SpaceMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/SpaceMono.tar.xz",
+      "Sha256": "c7d7ac234030c008dbd7a47bc577e624b8d9ae367860c0b4ba148b33374e74a1",
+      "Size": 2289120,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "SpaceMonoNerdFontMono-Bold.ttf",
+          "Family": "SpaceMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "SpaceMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "SpaceMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "SpaceMonoNerdFontMono-Italic.ttf",
+          "Family": "SpaceMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "SpaceMonoNerdFontMono-Regular.ttf",
+          "Family": "SpaceMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "Terminus",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/Terminus.tar.xz",
+      "Sha256": "80c6431f5789a72dc7464ecce3ee820cdc0f0123585befada87b13876d2fda90",
+      "Size": 2517124,
+      "Recommended": true,
+      "Fonts": [
+        {
+          "File": "TerminessNerdFontMono-Bold.ttf",
+          "Family": "Terminess Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "TerminessNerdFontMono-BoldItalic.ttf",
+          "Family": "Terminess Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "TerminessNerdFontMono-Italic.ttf",
+          "Family": "Terminess Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "TerminessNerdFontMono-Regular.ttf",
+          "Family": "Terminess Nerd Font Mono",
+          "Style": "Regular"
+        },
+        {
+          "File": "TerminessNerdFont-Regular.ttf",
+          "Family": "Terminess Nerd Font",
+          "Style": "Regular"
+        },
+        {
+          "File": "TerminessNerdFont-Bold.ttf",
+          "Family": "Terminess Nerd Font",
+          "Style": "Bold"
+        },
+        {
+          "File": "TerminessNerdFont-Italic.ttf",
+          "Family": "Terminess Nerd Font",
+          "Style": "Italic"
+        },
+        {
+          "File": "TerminessNerdFont-BoldItalic.ttf",
+          "Family": "Terminess Nerd Font",
+          "Style": "BoldItalic"
+        }
+      ]
+    },
+    {
+      "Name": "UbuntuMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/UbuntuMono.tar.xz",
+      "Sha256": "9c4d18e23e1ff809849fa0afec79ade67c58e22150c95ea373d22598c1ddea18",
+      "Size": 2489284,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "UbuntuMonoNerdFontMono-Bold.ttf",
+          "Family": "UbuntuMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "UbuntuMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "UbuntuMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "UbuntuMonoNerdFontMono-Italic.ttf",
+          "Family": "UbuntuMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "UbuntuMonoNerdFontMono-Regular.ttf",
+          "Family": "UbuntuMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "UbuntuSans",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/UbuntuSans.tar.xz",
+      "Sha256": "abcbf48bb68e2dd09d43dc0ea04f6878cc8ee46334a9f9ce52b51e06f31aa0d0",
+      "Size": 4273464,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "UbuntuSansMonoNerdFontMono-Bold.ttf",
+          "Family": "UbuntuSansMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "UbuntuSansMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "UbuntuSansMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "UbuntuSansMonoNerdFontMono-Italic.ttf",
+          "Family": "UbuntuSansMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "UbuntuSansMonoNerdFontMono-Regular.ttf",
+          "Family": "UbuntuSansMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "VictorMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/VictorMono.tar.xz",
+      "Sha256": "c6c52657921835862314b7edbbccf5695146c1e6c5d3507c3deab88e555215ed",
+      "Size": 3715280,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "VictorMonoNerdFontMono-Bold.ttf",
+          "Family": "VictorMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "VictorMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "VictorMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "VictorMonoNerdFontMono-Italic.ttf",
+          "Family": "VictorMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "VictorMonoNerdFontMono-Regular.ttf",
+          "Family": "VictorMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "ZedMono",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/ZedMono.tar.xz",
+      "Sha256": "0411af0883248778335d34bbad8e400466b638d5d896e15c2eb37cd9d4518321",
+      "Size": 48514336,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "ZedMonoNerdFontMono-Bold.ttf",
+          "Family": "ZedMono NFM",
+          "Style": "Bold"
+        },
+        {
+          "File": "ZedMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "ZedMono NFM",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "ZedMonoNerdFontMono-Italic.ttf",
+          "Family": "ZedMono NFM",
+          "Style": "Italic"
+        },
+        {
+          "File": "ZedMonoNerdFontMono-Regular.ttf",
+          "Family": "ZedMono NFM",
+          "Style": "Regular"
+        }
+      ]
+    },
+    {
+      "Name": "iA-Writer",
+      "Url": "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/iA-Writer.tar.xz",
+      "Sha256": "c6df9758b24f50eed8edbd17df72b93dd68a55b87d4791f7e777b95b52848afa",
+      "Size": 4418088,
+      "Recommended": false,
+      "Fonts": [
+        {
+          "File": "iMWritingMonoNerdFontMono-Bold.ttf",
+          "Family": "iMWritingMono Nerd Font Mono",
+          "Style": "Bold"
+        },
+        {
+          "File": "iMWritingMonoNerdFontMono-BoldItalic.ttf",
+          "Family": "iMWritingMono Nerd Font Mono",
+          "Style": "Bold Italic"
+        },
+        {
+          "File": "iMWritingMonoNerdFontMono-Italic.ttf",
+          "Family": "iMWritingMono Nerd Font Mono",
+          "Style": "Italic"
+        },
+        {
+          "File": "iMWritingMonoNerdFontMono-Regular.ttf",
+          "Family": "iMWritingMono Nerd Font Mono",
+          "Style": "Regular"
+        }
+      ]
+    }
+  ]
+}
