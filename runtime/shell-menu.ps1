@@ -424,7 +424,10 @@ function global:Get-ShellFontChoices {
     $catalog=Get-Content (Join-Path $global:ShellControlRoot 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json
     $families=@()
     $receipt=Join-Path $global:ShellControlRoot 'installed-fonts.json'
-    if(Test-Path -LiteralPath $receipt){$families+=@(Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json|Where-Object {Test-Path -LiteralPath $_.Path}|ForEach-Object Family)}
+    if(Test-Path -LiteralPath $receipt){
+        $registered=Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json
+        $families+=@($registered|Where-Object {Test-Path -LiteralPath $_.Path}|ForEach-Object Family)
+    }
     try {
         Add-Type -AssemblyName PresentationCore -ErrorAction Stop
         $families+=@([Windows.Media.Fonts]::SystemFontFamilies|ForEach-Object Source)
@@ -484,7 +487,8 @@ function global:Show-ShellMenu {
                     'Schriftart' {
                         $catalog=@(Get-ShellFontChoices)
                         $options=@($catalog|ForEach-Object {$_.Shortcut+'  ·  '+$_.Family})
-                        $total=@(Get-Content -LiteralPath (Join-Path $global:ShellControlRoot 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json).Count
+                        $available=Get-Content -LiteralPath (Join-Path $global:ShellControlRoot 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json
+                        $total=@($available).Count
                         $header=(ConvertTo-ShellMenuText 'Installierte Schriften: {0}/{1}') -f $catalog.Count,$total
                         if($catalog.Count -lt $total){$options+=@('Schriften installieren')}
                         $choice=Select-ShellMenuItem ($header+"`nAaBb 012345 · ┌─┬─┐ · ███ ·   ") ($options+@('← Zurück'))

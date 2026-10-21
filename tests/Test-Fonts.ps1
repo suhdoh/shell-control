@@ -6,20 +6,21 @@
     try {
         Copy-Item -LiteralPath (Join-Path $savedRoot 'font-catalog.json') -Destination $fontFixture
         $global:ShellControlRoot=$fontFixture
-        $catalog=@(Get-Content (Join-Path $fontFixture 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json)
+        $catalog=Get-Content (Join-Path $fontFixture 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json
         $first=Join-Path $fontFixture 'first.ttf'
         $second=Join-Path $fontFixture 'second.ttf'
         'fixture'|Set-Content -LiteralPath $first,$second -Encoding UTF8
         Save-ShellFontReceipt -Fonts @([pscustomobject]@{Family=$catalog[0].Family;Style='Regular';Path=$first})
         $receipt=Join-Path $fontFixture 'installed-fonts.json'
-        Assert (@(Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json).Count -eq 1) 'The first registration was not persisted immediately'
+        $registered=Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json
+        Assert (@($registered).Count -eq 1) 'The first registration was not persisted immediately'
         # A later pack must add to previous registrations rather than replace them.
         Save-ShellFontReceipt -Fonts @([pscustomobject]@{Family=$catalog[1].Family;Style='Regular';Path=$second})
-        $registered=@(Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json)
-        Assert ($registered.Count -eq 2) 'A later font pack discarded previous registrations'
+        $registered=Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json
+        Assert (@($registered).Count -eq 2) 'A later font pack discarded previous registrations'
         Save-ShellFontReceipt -Fonts @([pscustomobject]@{Family=$catalog[1].Family;Style='Bold';Path=$second})
-        $registered=@(Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json)
-        Assert ($registered.Count -eq 2 -and ($registered|Where-Object Path -eq $second).Style -eq 'Bold') 'Registering an existing path duplicated or failed to update its entry'
+        $registered=Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json
+        Assert (@($registered).Count -eq 2 -and ($registered|Where-Object Path -eq $second).Style -eq 'Bold') 'Registering an existing path duplicated or failed to update its entry'
         # Optional WPF discovery must not hide valid entries from a completed registration.
         function Add-Type {param($AssemblyName,$ErrorAction) throw 'simulated unavailable font enumeration'}
         $choices=@(Get-ShellFontChoices)

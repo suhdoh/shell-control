@@ -58,7 +58,11 @@ function global:Save-ShellFontReceipt {
     param([Parameter(Mandatory)][object[]]$Fonts)
     $path=Join-Path $global:ShellControlRoot 'installed-fonts.json'
     $snapshot=Read-ShellTextSnapshot $path
-    $existing=if($snapshot.Exists){@($snapshot.Text|ConvertFrom-Json -ErrorAction Stop)}else{@()}
+    $existing=@()
+    if($snapshot.Exists){
+        $parsed=ConvertFrom-Json -InputObject $snapshot.Text -ErrorAction Stop
+        if($null -ne $parsed){$existing=$parsed}
+    }
     $byPath=@{}
     foreach($font in (@($existing)+@($Fonts))){
         if(-not $font.Path -or -not $font.Family){throw 'The installed font receipt contains an invalid entry.'}
