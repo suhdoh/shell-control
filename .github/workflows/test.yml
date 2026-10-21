@@ -7,7 +7,22 @@ jobs:
       - uses: actions/checkout@v4
       - name: Test Windows PowerShell 5.1
         shell: powershell
-        run: ./tests/Test-Project.ps1
+        run: |
+          try { ./tests/Test-Project.ps1 }
+          catch {
+            $detail = ($_ | Out-String) + "`n" + $_.ScriptStackTrace
+            $detail = $detail.Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+            Write-Output "::error::$detail"
+            exit 1
+          }
       - name: Test PowerShell 7
+        if: ${{ !cancelled() }}
         shell: pwsh
-        run: ./tests/Test-Project.ps1
+        run: |
+          try { ./tests/Test-Project.ps1 }
+          catch {
+            $detail = ($_ | Out-String) + "`n" + $_.ScriptStackTrace
+            $detail = $detail.Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+            Write-Output "::error::$detail"
+            exit 1
+          }
