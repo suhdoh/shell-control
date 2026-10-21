@@ -4,7 +4,9 @@ function global:Test-ShellIse {
     return ($null -ne $variable -and $null -ne $variable.Value -and $null -ne $variable.Value.Options)
 }
 function global:Get-ShellIseSchemes {
-    Get-Content -LiteralPath (Join-Path $global:ShellControlRoot 'assets/themes.json') -Raw -Encoding UTF8|ConvertFrom-Json
+    # Windows PowerShell 5.1 emits a root JSON array as one pipeline object.
+    $schemes=Get-Content -LiteralPath (Join-Path $global:ShellControlRoot 'assets/themes.json') -Raw -Encoding UTF8|ConvertFrom-Json
+    $schemes
 }
 function global:Get-ShellIseAppearance {
     if(-not (Test-ShellIse)){throw 'Diese Einstellung erfordert Windows PowerShell ISE.'}

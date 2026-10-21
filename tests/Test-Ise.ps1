@@ -23,6 +23,12 @@
             [pscustomobject]@{Shortcut='fixture-ise';Family='Fixture ISE Mono'}
             [pscustomobject]@{Shortcut='term';Family='Terminess Nerd Font'}
         }
+        $iseSchemes=@(Get-ShellIseSchemes)
+        Assert ($iseSchemes.Count -eq 18) 'ISE theme catalog did not enumerate all 18 schemes'
+        foreach($iseScheme in $iseSchemes){
+            Assert ($iseScheme -isnot [array] -and $iseScheme.name -is [string] -and -not [string]::IsNullOrWhiteSpace($iseScheme.name)) 'ISE theme catalog emitted an array instead of an individual named scheme'
+        }
+        Assert (@(Set-ShellIseTheme list).Count -eq 18) 'ISE theme list did not expose every scheme'
         Assert (Test-ShellIse) 'ISE host was not recognized'
         Initialize-ShellIse
         Assert ($global:psISE.Options.FontName -eq 'Terminess Nerd Font' -and $global:psISE.Options.FontSize -eq 16) 'ISE did not apply the installed default font and size'

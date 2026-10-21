@@ -1,4 +1,19 @@
 ﻿# Windows Terminal profile controls shared by PowerShell 5.1 and 7.
+function global:Get-ShellAppearanceProfiles {
+    param([Parameter(Mandatory)]$Settings,[string]$ProfileId=$env:WT_PROFILE_ID)
+    # A repaired ordinary entry and its Shell Control entry launch the same shell.
+    # Keep their appearance choices together when users switch between those launch routes.
+    $ids=@($ProfileId)
+    switch($ProfileId){
+        '{2947bb6d-5661-4ace-9b6d-842eab823451}'{$ids+='{574e775e-4f2a-5b96-ac1e-a2962a402336}'}
+        '{574e775e-4f2a-5b96-ac1e-a2962a402336}'{$ids+='{2947bb6d-5661-4ace-9b6d-842eab823451}'}
+        '{2947bb6d-5661-4ace-9b6d-842eab823452}'{$ids+='{61c54bbd-c2c6-5271-96e7-009a87ff44bf}'}
+        '{61c54bbd-c2c6-5271-96e7-009a87ff44bf}'{$ids+='{2947bb6d-5661-4ace-9b6d-842eab823452}'}
+    }
+    foreach($id in $ids){
+        $Settings.profiles.list|Where-Object guid -eq $id|Select-Object -First 1
+    }
+}
 function global:Get-ShellTerminalAppearance {
     if(Test-ShellIse){return (Get-ShellIseAppearance)}
     if (-not $env:WT_PROFILE_ID) { throw 'Kein Windows-Terminal-Tab aktiv. Starte das Profil Shell Control in Windows Terminal, um Themes, Fonts und CRT zu verwenden.' }
@@ -35,12 +50,18 @@ function global:Set-TerminalCrt {
         $settingsPath = (Get-ShellTerminalSettingsPath)
         $snapshot=$null
         $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
-        $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
+        $profiles = @(Get-ShellAppearanceProfiles -Settings $settings -ProfileId $appearance.ProfileId)
         $enabled = if ($Mode -eq 'toggle') { -not $appearance.CRT } else { $Mode -eq 'on' }
-        if ($enabled -and $appearance.ShaderPath) {
-            throw 'CRT kann nicht aktiviert werden: Ein benutzerdefinierter Pixelshader ist aktiv und hat in Windows Terminal Vorrang. Deaktiviere ihn zuerst in den Terminal-Einstellungen.'
+        foreach($profile in $profiles){
+            $shader=$settings.profiles.defaults.'experimental.pixelShaderPath'
+            if($profile.PSObject.Properties['experimental.pixelShaderPath']){$shader=$profile.'experimental.pixelShaderPath'}
+            if ($enabled -and $shader) {
+                throw ('CRT kann nicht aktiviert werden: Ein benutzerdefinierter Pixelshader ist im Profil '+$profile.name+' aktiv und hat in Windows Terminal Vorrang. Deaktiviere ihn zuerst in den Terminal-Einstellungen.')
+            }
         }
-        $profile | Add-Member -NotePropertyName 'experimental.retroTerminalEffect' -NotePropertyValue ([bool]$enabled) -Force
+        foreach($profile in $profiles){
+            $profile | Add-Member -NotePropertyName 'experimental.retroTerminalEffect' -NotePropertyValue ([bool]$enabled) -Force
+        }
         Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
         $appearance = Get-ShellTerminalAppearance
     }
@@ -118,9 +139,11 @@ function global:Set-TerminalTheme {
     if (-not @($settings.schemes|Where-Object name -eq $scheme.name).Count) {
         $settings | Add-Member -NotePropertyName schemes -NotePropertyValue (@($settings.schemes|Where-Object {$_})+@($scheme)) -Force
     }
-    $profile | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
-    if ($scheme.cursorColor) {
-        $profile | Add-Member -NotePropertyName cursorColor -NotePropertyValue $scheme.cursorColor -Force
+    foreach($appearanceProfile in (Get-ShellAppearanceProfiles -Settings $settings)){
+        $appearanceProfile | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
+        if ($scheme.cursorColor) {
+            $appearanceProfile | Add-Member -NotePropertyName cursorColor -NotePropertyValue $scheme.cursorColor -Force
+        }
     }
     Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
     Write-Host ('Theme: {0} · {1}' -f $scheme.name, $profile.name)
@@ -163,20 +186,22 @@ function global:Set-TerminalFont {
     $snapshot=$null
     $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
     $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
-    if (-not $profile.font) { $profile | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) -Force }
     $newSize = if ($PSBoundParameters.ContainsKey('Size')) { $Size } else { $appearance.Size }
-    $profile.font | Add-Member -NotePropertyName face -NotePropertyValue $choice.Family -Force
-    if ($null -ne $newSize) {
-        $profile.font | Add-Member -NotePropertyName size -NotePropertyValue $newSize -Force
-    } else { $profile.font.PSObject.Properties.Remove('size') }
-    # Use each font's natural metrics. "1" is 1 em, not the default cell width.
-    foreach ($metric in @('cellWidth','cellHeight')) {
-        if ($choice.$metric) {
-            $profile.font | Add-Member -NotePropertyName $metric -NotePropertyValue $choice.$metric -Force
-        } else { $profile.font.PSObject.Properties.Remove($metric) }
+    foreach($appearanceProfile in (Get-ShellAppearanceProfiles -Settings $settings -ProfileId $appearance.ProfileId)){
+        if (-not $appearanceProfile.font) { $appearanceProfile | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) -Force }
+        $appearanceProfile.font | Add-Member -NotePropertyName face -NotePropertyValue $choice.Family -Force
+        if ($null -ne $newSize) {
+            $appearanceProfile.font | Add-Member -NotePropertyName size -NotePropertyValue $newSize -Force
+        } else { $appearanceProfile.font.PSObject.Properties.Remove('size') }
+        # Use each font's natural metrics. "1" is 1 em, not the default cell width.
+        foreach ($metric in @('cellWidth','cellHeight')) {
+            if ($choice.$metric) {
+                $appearanceProfile.font | Add-Member -NotePropertyName $metric -NotePropertyValue $choice.$metric -Force
+            } else { $appearanceProfile.font.PSObject.Properties.Remove($metric) }
+        }
+        $appearanceProfile.font | Add-Member -NotePropertyName weight -NotePropertyValue 'normal' -Force
+        $appearanceProfile.font | Add-Member -NotePropertyName builtinGlyphs -NotePropertyValue $true -Force
     }
-    $profile.font | Add-Member -NotePropertyName weight -NotePropertyValue 'normal' -Force
-    $profile.font | Add-Member -NotePropertyName builtinGlyphs -NotePropertyValue $true -Force
     Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
     $sizeLabel=if($null -ne $newSize){[string]$newSize+' pt'}else{'Terminal-Standard'}
     Write-Host ('Schrift: {0} · {1} · {2}' -f $choice.Family, $sizeLabel, $profile.name)

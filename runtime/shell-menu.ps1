@@ -108,9 +108,10 @@ function global:Set-TerminalFontSize {
     $path = (Get-ShellTerminalSettingsPath)
     $snapshot=$null
     $settings = Read-ShellTerminalJson $path -Snapshot ([ref]$snapshot)
-    $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
-    if (-not $profile.font) { $profile | Add-Member font ([pscustomobject]@{}) }
-    $profile.font | Add-Member -NotePropertyName size -NotePropertyValue $Size -Force
+    foreach($profile in (Get-ShellAppearanceProfiles -Settings $settings -ProfileId $appearance.ProfileId)){
+        if (-not $profile.font) { $profile | Add-Member font ([pscustomobject]@{}) }
+        $profile.font | Add-Member -NotePropertyName size -NotePropertyValue $Size -Force
+    }
     Write-ShellTerminalSettings -Path $path -Settings $settings -Snapshot $snapshot
     Write-Host ('Schriftgroesse: {0} pt · {1}' -f $Size, $appearance.ProfileName)
     if ($Reload) { Open-FreshTerminalTab }

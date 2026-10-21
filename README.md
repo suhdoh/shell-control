@@ -89,6 +89,8 @@ The verified font catalog contains 85 families. The full pack downloads 63 upstr
 
 Font choices in the menu are limited to installed families, with an installed/available count and a shortcut to font installation. Successful font registrations are saved as setup progresses and retained across packs, so rerunning setup resumes after a partial failure. A newly installed font may require a new Terminal tab before Windows refreshes its font cache. Natural glyph metrics are used; the retro Terminess preset retains a small spacing adjustment.
 
+Appearance changes stay synchronized between the ordinary and Shell Control profiles for the same PowerShell version, so changing the launch route retains the selected font, size, theme and CRT setting.
+
 The native prompt is the default for fast startup: username, location and time separated by two spaces on the first line, then `❯` on the second line. Oh My Posh is an optional engine using the included minimal configuration. Switch it under **Appearance → Prompt** and open a new tab if your current session retains an earlier prompt hook.
 
 ## Commands

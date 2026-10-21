@@ -111,6 +111,7 @@ foreach($file in $textFiles){
 . (Join-Path $PSScriptRoot 'Test-TerminalSettings.ps1')
 . (Join-Path $PSScriptRoot 'Test-Profiles.ps1')
 . (Join-Path $PSScriptRoot 'Test-Startup.ps1')
+. (Join-Path $PSScriptRoot 'Test-AppearanceAliases.ps1')
 . (Join-Path $PSScriptRoot 'Test-Persistence.ps1')
 . (Join-Path $PSScriptRoot 'Test-NativeStartup.ps1')
 . (Join-Path $PSScriptRoot 'Test-Shortcuts.ps1')
