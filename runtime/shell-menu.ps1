@@ -502,7 +502,12 @@ function global:Show-ShellMenu {
                         Set-TerminalFont (($choice -split '\s+',2)[0]) 6>$null;$notice='✓ Schrift aktiv: '+(Get-ShellTerminalAppearance).Font
                     }
                     'Schriftgröße' {
-                        $choice=Select-ShellMenuItem '' (@('8','9','10','11','12','13','14','15','16','18','20','22','24','28','32','36')+@('← Zurück')) -SelectedItem ([string](Get-ShellTerminalAppearance).Size)
+                        $currentSize=(Get-ShellTerminalAppearance).Size
+                        $selectedSize=if($null -ne $currentSize){([double]$currentSize).ToString([Globalization.CultureInfo]::InvariantCulture)}else{$null}
+                        $sizes=@('8','9','10','11','12','13','14','15','16','18','20','22','24','28','32','36')
+                        if($selectedSize -and $selectedSize -notin $sizes){$sizes=@($sizes)+@($selectedSize)}
+                        $sizes=@($sizes|Sort-Object {[double]$_})
+                        $choice=Select-ShellMenuItem '' ($sizes+@('← Zurück')) -SelectedItem $selectedSize
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Schriften';continue}
                         Set-TerminalFontSize ([double]$choice) 6>$null;$notice='✓ Schriftgröße: '+$choice
                     }

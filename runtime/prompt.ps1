@@ -9,20 +9,10 @@ function global:prompt {
     }
     $promptUser = [Environment]::UserName
     $promptTime = [DateTime]::Now.ToString('HH:mm:ss')
-    $promptLeft = "$promptUser in $promptLocation"
-    $promptWidth = 0
-    if ($Host.Name -eq 'ConsoleHost' -and -not [Console]::IsOutputRedirected) {
-        try { $promptWidth = $Host.UI.RawUI.WindowSize.Width } catch {}
-    }
     Write-Host $promptUser -ForegroundColor Yellow -NoNewline
     Write-Host ' in ' -ForegroundColor Gray -NoNewline
     Write-Host $promptLocation -ForegroundColor Cyan -NoNewline
-    if ($promptWidth -gt ($promptLeft.Length + $promptTime.Length + 2)) {
-        $promptGap = $promptWidth - $promptLeft.Length - $promptTime.Length - 1
-        Write-Host ((' ' * $promptGap) + $promptTime) -ForegroundColor DarkGray
-    } else {
-        Write-Host ('  ' + $promptTime) -ForegroundColor DarkGray
-    }
+    Write-Host ('  ' + $promptTime) -ForegroundColor DarkGray
     Write-Host ([char]0x276F) -ForegroundColor Green -NoNewline
     return ' '
 }

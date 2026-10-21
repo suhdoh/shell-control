@@ -3,12 +3,13 @@ param(
     [string]$InstallPath=(Join-Path $env:LOCALAPPDATA 'ShellControl'),
     [ValidateSet('Recommended','All')][string]$FontPack='Recommended',
     [switch]$SkipDependencies,[switch]$SkipFonts,[switch]$NoProfiles,[switch]$NoTerminal,
-    [switch]$PreserveTerminalProfiles,[switch]$NoInteractive,
+    [switch]$PreserveTerminalProfiles,[switch]$NoInteractive,[switch]$RepairStartup,[switch]$Launch,
     [string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),
     [string]$TerminalSettingsPath
 )
 $ErrorActionPreference='Stop'
 if($env:OS -ne 'Windows_NT'){throw 'Shell Control requires Windows 10/11.'}
+if($RepairStartup -and ($NoTerminal -or $PreserveTerminalProfiles)){throw '-RepairStartup requires Terminal configuration; do not combine it with -NoTerminal or -PreserveTerminalProfiles.'}
 $source=Join-Path $PSScriptRoot 'runtime'
 if(-not(Test-Path -LiteralPath (Join-Path $source 'Initialize.ps1'))){throw 'Extract the complete repository ZIP before running Install.ps1.'}
 . (Join-Path $source 'safe-io.ps1')
@@ -35,6 +36,11 @@ foreach($notice in @('LICENSE','THIRD-PARTY.md','FONT-CREDITS.md','SECURITY.md')
 }
 $global:ShellControlRoot=$InstallPath
 if($TerminalSettingsPath){$global:ShellControlSettingsPath=[IO.Path]::GetFullPath($TerminalSettingsPath)}
+if($RepairStartup){
+    . (Join-Path $InstallPath 'common.ps1')
+    Set-ShellControlPreference promptEngine native
+    Set-ShellControlPreference fastfetch $true
+}
 . (Join-Path $InstallPath 'Initialize.ps1')
 if($TerminalSettingsPath){Set-ShellControlPreference terminalSettingsPath $global:ShellControlSettingsPath}
 $interactive=-not $NoInteractive -and $Host.Name -eq 'ConsoleHost' -and -not [Console]::IsOutputRedirected
@@ -59,7 +65,7 @@ try {
         }
     }
     $stages.CMD={Install-ShellCmd}
-    if(-not $NoTerminal){$stages.Terminal={Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles)}}
+    if(-not $NoTerminal){$stages.Terminal={Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles) -RepairStartup:$RepairStartup}}
     Invoke-ShellSetupStages -Stages $stages
     [void](Update-ShellHardwareCache)
     Send-ShellSetupProgress 100 'Installation completed'
@@ -71,4 +77,9 @@ try {
 }
 Write-Host ('Installed: '+$InstallPath)
 Write-Host ('Backups:   '+$backup)
-Write-Host 'Open a new Terminal tab and run: shell-menu'
+Write-Host 'Open the Shell Control profile in Windows Terminal and run: shell-menu'
+if($Launch){
+    $terminal=Find-ShellExecutable wt.exe
+    if(-not $terminal){throw 'Windows Terminal could not be found. Installation is complete; open the Shell Control profile after installing Windows Terminal.'}
+    Start-Process -FilePath $terminal -ArgumentList @('-p','{2947bb6d-5661-4ace-9b6d-842eab823451}') -ErrorAction Stop
+}

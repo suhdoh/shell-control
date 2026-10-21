@@ -150,7 +150,8 @@ function global:Install-ShellProfiles {
     Send-ShellSetupProgress 100 'PowerShell 5.1, ISE and PowerShell 7 profiles ready'
 }
 function global:Install-ShellTerminal {
-    param([switch]$PreserveProfiles,[switch]$SetDefault)
+    param([switch]$PreserveProfiles,[switch]$SetDefault,[switch]$RepairStartup)
+    if($RepairStartup -and $PreserveProfiles){throw '-RepairStartup cannot be combined with -PreserveProfiles.'}
     try {$path=Get-ShellTerminalSettingsPath} catch [IO.FileNotFoundException] {
         if(-not(Find-ShellExecutable wt.exe)){throw}
         $path=Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'
@@ -183,7 +184,7 @@ function global:Install-ShellTerminal {
                     '{2947bb6d-5661-4ace-9b6d-842eab823452}'{'powershell.exe -NoLogo'}
                     default {$null}
                 }
-                if($legacy -and (-not $managed.commandline -or $managed.commandline -eq $legacy)){
+                if($legacy -and ($RepairStartup -or -not $managed.commandline -or $managed.commandline -eq $legacy)){
                     $managed|Add-Member -NotePropertyName commandline -NotePropertyValue $definition.commandline -Force
                 }
                 continue

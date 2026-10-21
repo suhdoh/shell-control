@@ -70,11 +70,14 @@ shell-menu
 # Configure an existing installation without downloading programs or fonts.
 .\Install.ps1 -SkipDependencies -SkipFonts
 
+# Restore the native prompt and a clean startup, then open the Shell Control tab.
+.\Install.ps1 -RepairStartup -Launch
+
 # Custom destination.
 .\Install.ps1 -InstallPath D:\ShellControl
 ```
 
-`-NoProfiles`, `-NoTerminal` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. If a dependency or font installation fails, setup still attempts the independent profile and Terminal configuration, then reports the failed stages. A partial setup is not reported as a completed installation. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained.
+`-NoProfiles`, `-NoTerminal` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. If a dependency or font installation fails, setup still attempts the independent profile and Terminal configuration, then reports the failed stages. A partial setup is not reported as a completed installation. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained. `-RepairStartup` explicitly selects the native prompt, enables the Fastfetch greeting and replaces the launch commands of the two managed PowerShell profiles, including customized ones. Font, color and CRT selections remain intact. It cannot be combined with `-NoTerminal` or `-PreserveTerminalProfiles`. `-Launch` opens the configured Shell Control profile in Windows Terminal after successful setup.
 
 Terminal and profile changes use a temporary file followed by replacement, with unique backups in `.shell-control-backups` beside the edited file. Detected changes since reading cause the save to abort rather than overwrite a newer version. These protections do not provide a transaction or automatic rollback for the entire installation. See [SECURITY.md](SECURITY.md) for the scope and remaining limitations.
 
@@ -86,7 +89,7 @@ The verified font catalog contains 85 families. The full pack downloads 63 upstr
 
 Font choices in the menu are limited to installed families, with an installed/available count and a shortcut to font installation. Successful font registrations are saved as setup progresses and retained across packs, so rerunning setup resumes after a partial failure. A newly installed font may require a new Terminal tab before Windows refreshes its font cache. Natural glyph metrics are used; the retro Terminess preset retains a small spacing adjustment.
 
-The native prompt is the default for fast startup. Oh My Posh is an optional engine using the included minimal configuration. Switch it under **Appearance → Prompt** and open a new tab if your current session retains an earlier prompt hook.
+The native prompt is the default for fast startup: username, location and time separated by two spaces on the first line, then `❯` on the second line. Oh My Posh is an optional engine using the included minimal configuration. Switch it under **Appearance → Prompt** and open a new tab if your current session retains an earlier prompt hook.
 
 ## Commands
 
