@@ -125,20 +125,27 @@ public static class ShellControlFontApi {
 function global:Install-ShellProfiles {
     param([string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),[string]$BackupRoot=(Join-Path $global:ShellControlRoot ('backups\'+(Get-Date -Format yyyyMMdd-HHmmss)+'-'+[guid]::NewGuid().ToString('N'))))
     New-Item -ItemType Directory -Path $BackupRoot -Force|Out-Null
+    $entry=(Join-Path $global:ShellControlRoot 'Initialize.ps1').Replace("'","''")
     foreach($version in @('PowerShell','WindowsPowerShell')){
         $folder=Join-Path $DocumentsPath $version
         New-Item -ItemType Directory -Path $folder -Force|Out-Null
-        $path=Join-Path $folder 'profile.ps1'
-        $snapshot=Read-ShellTextSnapshot $path
-        $text=$snapshot.Text
-        if(Test-Path -LiteralPath $path){Copy-Item -LiteralPath $path -Destination (Join-Path $BackupRoot ($version+'-profile.ps1'))}
-        $text=[regex]::Replace($text,'(?ms)^# BEGIN SHELL CONTROL\r?\n.*?^# END SHELL CONTROL\r?\n?','')
-        # Migrate this project's earlier direct imports, retaining unrelated user functions.
-        $legacy=[regex]::Escape($global:ShellControlRoot.TrimEnd('\'))
-        $text=[regex]::Replace($text,"(?m)^\s*\.\s+'"+$legacy+"\\(?:prompt|listing|terminal-controls|system-info|shell-menu|greeting)\.ps1'\s*\r?$",'')
-        $entry=(Join-Path $global:ShellControlRoot 'Initialize.ps1').Replace("'","''")
-        $block="# BEGIN SHELL CONTROL`r`n. '$entry'`r`n# END SHELL CONTROL`r`n"
-        Write-ShellAtomicText -Path $path -Text ($text.TrimEnd()+"`r`n`r`n"+$block) -ExpectedHash $snapshot.Hash -Bom
+        foreach($name in @('profile.ps1','Microsoft.PowerShell_profile.ps1')){
+            $path=Join-Path $folder $name
+            $snapshot=Read-ShellTextSnapshot $path
+            $text=$snapshot.Text
+            if($snapshot.Exists){Copy-Item -LiteralPath $path -Destination (Join-Path $BackupRoot ($version+'-'+$name))}
+            # Do not let an incomplete outer marker consume a later managed block.
+            $text=[regex]::Replace($text,'(?ms)^# BEGIN SHELL CONTROL\r?\n(?:(?!^# BEGIN SHELL CONTROL\r?$).)*?^# END SHELL CONTROL\r?\n?','')
+            # Migrate this installation's earlier direct imports, retaining unrelated user functions.
+            $legacy=[regex]::Escape($global:ShellControlRoot.TrimEnd('\').Replace("'","''"))
+            $text=[regex]::Replace($text,"(?m)^\s*\.\s+'"+$legacy+"[\\/](?:Initialize|prompt|listing|terminal-controls|system-info|shell-menu|greeting)\.ps1'\s*\r?$",'')
+            $body=if($name -eq 'profile.ps1'){
+                # ConsoleHost loads its host-specific profile later, after other prompt initializers.
+                "if (`$Host.Name -ne 'ConsoleHost') {`r`n    . '$entry'`r`n}`r`n"
+            }else{". '$entry'`r`n"}
+            $block="# BEGIN SHELL CONTROL`r`n"+$body+"# END SHELL CONTROL`r`n"
+            Write-ShellAtomicText -Path $path -Text ($text.TrimEnd()+"`r`n`r`n"+$block) -ExpectedHash $snapshot.Hash -Bom
+        }
     }
     Send-ShellSetupProgress 100 'PowerShell 5.1, ISE and PowerShell 7 profiles ready'
 }
@@ -161,14 +168,26 @@ function global:Install-ShellTerminal {
     $names=@($schemes|ForEach-Object name)
     $settings|Add-Member -NotePropertyName schemes -NotePropertyValue (@($settings.schemes|Where-Object {$_ -and $_.name -notin $names})+@($schemes)) -Force
     if(-not $PreserveProfiles){
+        $entry=Join-Path $global:ShellControlRoot 'Initialize.ps1'
         $profiles=@(
-            @{guid='{2947bb6d-5661-4ace-9b6d-842eab823451}';name='Shell Control · PowerShell 7';commandline='pwsh.exe -NoLogo'},
-            @{guid='{2947bb6d-5661-4ace-9b6d-842eab823452}';name='Shell Control · PowerShell 5';commandline='powershell.exe -NoLogo'},
+            @{guid='{2947bb6d-5661-4ace-9b6d-842eab823451}';name='Shell Control · PowerShell 7';commandline=('pwsh.exe -NoLogo -NoProfile -NoExit -File "'+$entry+'"')},
+            @{guid='{2947bb6d-5661-4ace-9b6d-842eab823452}';name='Shell Control · PowerShell 5';commandline=('powershell.exe -NoLogo -NoProfile -NoExit -File "'+$entry+'"')},
             @{guid='{2947bb6d-5661-4ace-9b6d-842eab823453}';name='Shell Control · CMD';commandline=('%SystemRoot%\System32\cmd.exe /d /k "'+(Join-Path $global:ShellControlRoot 'cmd-terminal.cmd')+'"')}
         )
         foreach($definition in $profiles){
-            # Re-running setup keeps the user's existing appearance and command settings.
-            if(@($settings.profiles.list|Where-Object guid -eq $definition.guid).Count){continue}
+            # Upgrade only our known legacy launchers; retain customized commands and appearance.
+            $managed=$settings.profiles.list|Where-Object guid -eq $definition.guid|Select-Object -First 1
+            if($managed){
+                $legacy=switch($definition.guid){
+                    '{2947bb6d-5661-4ace-9b6d-842eab823451}'{'pwsh.exe -NoLogo'}
+                    '{2947bb6d-5661-4ace-9b6d-842eab823452}'{'powershell.exe -NoLogo'}
+                    default {$null}
+                }
+                if($legacy -and (-not $managed.commandline -or $managed.commandline -eq $legacy)){
+                    $managed|Add-Member -NotePropertyName commandline -NotePropertyValue $definition.commandline -Force
+                }
+                continue
+            }
             $profile=[pscustomobject]$definition
             $profile|Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{face='Terminess Nerd Font';size=16;cellWidth='0.54';cellHeight='1';weight='normal'})
             $profile|Add-Member colorScheme 'Amber 340'

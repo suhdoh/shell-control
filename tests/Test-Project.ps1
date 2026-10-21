@@ -109,6 +109,9 @@ foreach($file in $textFiles){
 . (Join-Path $PSScriptRoot 'Test-Appearance.ps1')
 . (Join-Path $PSScriptRoot 'Test-Fonts.ps1')
 . (Join-Path $PSScriptRoot 'Test-TerminalSettings.ps1')
+. (Join-Path $PSScriptRoot 'Test-Profiles.ps1')
+. (Join-Path $PSScriptRoot 'Test-Startup.ps1')
+. (Join-Path $PSScriptRoot 'Test-Persistence.ps1')
 . (Join-Path $PSScriptRoot 'Test-Safety.ps1')
 $global:LASTEXITCODE=0
 Write-Progress -Activity 'Shell Control setup' -Completed

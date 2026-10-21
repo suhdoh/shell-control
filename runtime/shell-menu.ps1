@@ -269,7 +269,7 @@ function global:Get-ShellMenuPickerView {
     [pscustomobject]@{SearchRow=$searchRow;FirstRow=$first;Count=$available;Width=[Math]::Max(12,$Columns-6)}
 }
 function global:Select-ShellMenuItem {
-    param([string]$Header,[string[]]$Items,[int]$Height=0,[object[]]$CommandRows)
+    param([string]$Header,[string[]]$Items,[int]$Height=0,[object[]]$CommandRows,[string]$SelectedItem)
     $Items=@(Get-ShellMenuOrderedItems -Items $Items)
     $Header=ConvertTo-ShellMenuText $Header
     # Non-interactive single-choice path also supports regression checks.
@@ -287,7 +287,7 @@ function global:Select-ShellMenuItem {
         $commandSearch[$key]=$row.Beschreibung+' '+(ConvertTo-ShellMenuText $row.Beschreibung -Language en)+' '+(ConvertTo-ShellMenuText $row.Beschreibung -Language de)
     }
     $start=[Math]::Max(6,[Console]::CursorTop+1)
-    $query='';$caret=0;$index=0;$offset=0;$dirty=$true;$lastSize=''
+    $query='';$caret=0;$index=[Math]::Max(0,[Array]::IndexOf($Items,$SelectedItem));$offset=0;$dirty=$true;$lastSize=''
     $previousCtrlC=[Console]::TreatControlCAsInput
     try {
         [Console]::TreatControlCAsInput=$true
@@ -436,6 +436,7 @@ function global:Get-ShellFontChoices {
 }
 function global:Show-ShellMenu {
     [CmdletBinding()]param()
+    $ErrorActionPreference='Stop'
     if($Host.Name -ne 'ConsoleHost' -or [Console]::IsInputRedirected){Show-CustomCommands;return}
     $previousEncoding=[Console]::OutputEncoding;$esc=[char]27
     $script:ShellMenuLanguage=$null;[void](Get-ShellMenuLanguage)
@@ -467,7 +468,9 @@ function global:Show-ShellMenu {
                     }
                     'Themes' {
                         $families=@(Get-ShellThemeFamilies)
-                        $choice=Select-ShellMenuItem 'Theme-Familie wählen' (@($families|ForEach-Object Name)+@('← Zurück'))
+                        $activeTheme=(Get-ShellTerminalAppearance).Theme
+                        $activeFamily=$families|Where-Object {$activeTheme -in $_.Variants}|Select-Object -First 1
+                        $choice=Select-ShellMenuItem 'Theme-Familie wählen' (@($families|ForEach-Object Name)+@('← Zurück')) -SelectedItem $activeFamily.Name
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         $themeFamily=$families|Where-Object Name -eq $choice|Select-Object -First 1
                         if($themeFamily.Variants.Count -eq 1){Set-TerminalTheme $themeFamily.Variants[0] 6>$null;$notice='✓ Theme aktiv: '+$themeFamily.Variants[0]}
@@ -475,7 +478,7 @@ function global:Show-ShellMenu {
                     }
                     'Varianten' {
                         Write-ShellMenuFrame ('Themes / '+$themeFamily.Name) ''
-                        $choice=Select-ShellMenuItem 'Variante wählen' (@($themeFamily.Variants)+@('← Zurück'))
+                        $choice=Select-ShellMenuItem 'Variante wählen' (@($themeFamily.Variants)+@('← Zurück')) -SelectedItem (Get-ShellTerminalAppearance).Theme
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Themes';continue}
                         Set-TerminalTheme $choice 6>$null;$notice='✓ Theme aktiv: '+$choice
                     }
@@ -491,15 +494,17 @@ function global:Show-ShellMenu {
                         $total=@($available).Count
                         $header=(ConvertTo-ShellMenuText 'Installierte Schriften: {0}/{1}') -f $catalog.Count,$total
                         if($catalog.Count -lt $total){$options+=@('Schriften installieren')}
-                        $choice=Select-ShellMenuItem ($header+"`nAaBb 012345 · ┌─┬─┐ · ███ ·   ") ($options+@('← Zurück'))
+                        $activeFont=$catalog|Where-Object Family -eq (Get-ShellTerminalAppearance).Font|Select-Object -First 1
+                        $selectedFont=if($activeFont){$activeFont.Shortcut+'  ·  '+$activeFont.Family}else{$null}
+                        $choice=Select-ShellMenuItem ($header+"`nAaBb 012345 · ┌─┬─┐ · ███ ·   ") ($options+@('← Zurück')) -SelectedItem $selectedFont
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Schriften';continue}
                         if($choice -eq 'Schriften installieren'){$fontReturn='Schriftart';$page='Schriften installieren';continue}
-                        Set-TerminalFont (($choice -split '\s+',2)[0]) 6>$null
+                        Set-TerminalFont (($choice -split '\s+',2)[0]) 6>$null;$notice='✓ Schrift aktiv: '+(Get-ShellTerminalAppearance).Font
                     }
                     'Schriftgröße' {
-                        $choice=Select-ShellMenuItem '' (@('8','9','10','11','12','13','14','15','16','18','20','22','24','28','32','36')+@('← Zurück'))
+                        $choice=Select-ShellMenuItem '' (@('8','9','10','11','12','13','14','15','16','18','20','22','24','28','32','36')+@('← Zurück')) -SelectedItem ([string](Get-ShellTerminalAppearance).Size)
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Schriften';continue}
-                        Set-TerminalFontSize ([double]$choice) 6>$null
+                        Set-TerminalFontSize ([double]$choice) 6>$null;$notice='✓ Schriftgröße: '+$choice
                     }
                     'Schriften installieren' {
                         $choice=Select-ShellMenuItem 'Schriftpaket wählen' @('Empfohlene Schriften','Alle geprüften Schriften','← Zurück')
@@ -509,7 +514,8 @@ function global:Show-ShellMenu {
                     }
                     'Prompt' {
                         $prefs=Get-ShellControlPreferences
-                        $choice=Select-ShellMenuItem ('Engine: '+$prefs.promptEngine) @('Nativ · schnell','Oh My Posh','← Zurück')
+                        $selectedEngine=if($prefs.promptEngine -eq 'omp'){'Oh My Posh'}else{'Nativ · schnell'}
+                        $choice=Select-ShellMenuItem ('Engine: '+$prefs.promptEngine) @('Nativ · schnell','Oh My Posh','← Zurück') -SelectedItem $selectedEngine
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         Set-ShellPromptEngine $(if($choice -eq 'Oh My Posh'){'omp'}else{'native'});$notice='✓ Fertig'
                     }
@@ -553,18 +559,21 @@ function global:Show-ShellMenu {
                         $page=if(-not $choice -or $choice -eq '← Zurück'){'Übersicht'}else{$choice}
                     }
                     'CRT' {
-                        $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','Umschalten','← Zurück')
+                        $selectedCrt=if((Get-ShellTerminalAppearance).CRT){'Einschalten'}else{'Ausschalten'}
+                        $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','Umschalten','← Zurück') -SelectedItem $selectedCrt
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         Set-TerminalCrt $(switch($choice){'Einschalten'{'on'} 'Ausschalten'{'off'} default{'toggle'}}) 6>$null
                         $notice=if((Get-ShellTerminalAppearance).CRT){'✓ CRT eingeschaltet'}else{'✓ CRT ausgeschaltet'}
                     }
                     'Fastfetch beim Start' {
-                        $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','← Zurück')
+                        $selectedGreeting=if((Get-ShellControlPreferences).fastfetch -ne $false){'Einschalten'}else{'Ausschalten'}
+                        $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','← Zurück') -SelectedItem $selectedGreeting
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Einstellungen';continue}
                         Set-ShellControlPreference fastfetch ($choice -eq 'Einschalten');$notice='✓ Fertig'
                     }
                     'Sprache / Language' {
-                        $choice=Select-ShellMenuItem '' @('English','Deutsch','← Zurück')
+                        $selectedLanguage=if((Get-ShellMenuLanguage) -eq 'de'){'Deutsch'}else{'English'}
+                        $choice=Select-ShellMenuItem '' @('English','Deutsch','← Zurück') -SelectedItem $selectedLanguage
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Einstellungen';continue}
                         Set-ShellMenuLanguage $(if($choice -eq 'English'){'en'}else{'de'});$notice='✓ Fertig'
                     }

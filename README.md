@@ -30,7 +30,7 @@ Settings     → language / startup Fastfetch
 Exit
 ```
 
-English is the default display language. Search always accepts English and German. The menu uses its own console renderer for stable input and selection; Gum is installed alongside the other shell tools.
+English is the default display language. Settings pickers highlight the saved value when reopened. Search always accepts English and German. The menu uses its own console renderer for stable input and selection; Gum is installed alongside the other shell tools.
 
 **Contents:** [Install](#install) · [Options](#options) · [Themes & fonts](#themes-and-fonts) · [Commands](#commands) · [Remove integration](#remove-profile-integration) · [Development](#development) · [Credits](#credits) · [Why](#why) · [Disclaimer](#disclaimer)
 
@@ -46,13 +46,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1
 
 Setup installs Windows Terminal, PowerShell 7, Fastfetch, eza, Gum and Oh My Posh. Start setup from a regular, non-administrator terminal. Only the dependency-installation worker requests UAC elevation when needed; font and configuration workers stay in the original user's context. An already elevated parent process passes its elevation to its children. Package and font tasks show progress inside the menu.
 
-The default destination is `%LOCALAPPDATA%\ShellControl`. Existing PowerShell profiles are backed up and supplemented with one managed import block. Existing Terminal profiles are retained; three Shell Control profiles are added for PowerShell 7, Windows PowerShell 5.1 and CMD. ISE loads the shared functions without the console greeting or menu.
+The default destination is `%LOCALAPPDATA%\ShellControl`. Existing PowerShell profiles are backed up. Console sessions load Shell Control last from the current-host profile; ISE uses the shared profile. Existing Terminal profiles are retained; three Shell Control profiles are added for PowerShell 7, Windows PowerShell 5.1 and CMD. The dedicated PowerShell profiles start without loading personal or system profiles, then initialize Shell Control directly. This prevents other startup banners and prompt engines from overriding Shell Control in those tabs; the original toolkit files and regular profiles remain available. ISE loads the shared functions without the console greeting or menu.
 
 Choose a dedicated empty installation directory, or an existing recognized Shell Control installation. Setup rejects drive roots, system directories, populated unrelated folders, source-checkout overlaps and installation paths through junctions or symbolic links.
 
 If both the current-user and machine execution policies prevent local profiles and no organization policy applies, setup enables `RemoteSigned` for the current user. Machine and organization policies are not changed.
 
-Open a new Terminal tab and run:
+Open the **Shell Control · PowerShell 7** profile in Windows Terminal and run:
 
 ```powershell
 shell-menu
@@ -80,7 +80,7 @@ Terminal and profile changes use a temporary file followed by replacement, with 
 
 ## Themes and fonts
 
-Theme families include Amber 340, Osaka Jade, Matrix, Dark Crimson, SynthWave 84, Rosé Pine, Catppuccin and Gruvbox. Rosé Pine, Catppuccin and Gruvbox variants are nested beneath their families. Fonts and prompts use the Terminal palette where supported. Bundled themes remain selectable before their first import; selecting one adds its scheme when needed. Theme, font and CRT controls require a Windows Terminal tab. A custom pixel shader takes precedence over CRT; disable it in Terminal settings before enabling the CRT effect. When multiple Terminal installations contain the same active profile, select the settings file explicitly with `-TerminalSettingsPath`; setup retains that choice for later sessions and menu workers.
+Theme families include Amber 340, Osaka Jade, Matrix, Dark Crimson, SynthWave 84, Rosé Pine, Catppuccin and Gruvbox. Rosé Pine, Catppuccin and Gruvbox variants are nested beneath their families. Fonts and prompts use the Terminal palette where supported. Bundled themes remain selectable before their first import; selecting one adds its scheme when needed. Theme, font and CRT controls require a Windows Terminal tab; starting `pwsh.exe` in the classic Windows Console cannot apply Terminal appearance settings. A custom pixel shader takes precedence over CRT; disable it in Terminal settings before enabling the CRT effect. When multiple Terminal installations contain the same active profile, select the settings file explicitly with `-TerminalSettingsPath`; setup retains that choice for later sessions and menu workers.
 
 The verified font catalog contains 85 families. The full pack downloads 63 upstream Nerd Font archives; the recommended pack contains Terminess, Gohu, JetBrains Mono, Cascadia Mono, IBM Plex Mono and Meslo. Archives are pinned to Nerd Fonts v3.5.1 and checked against SHA-256 digests. Font licenses are copied with the installed files. Fonts that lack the required symbols or have incompatible character metrics are excluded. No font binaries are redistributed in this repository.
 

@@ -1,9 +1,9 @@
 ﻿# Windows Terminal profile controls shared by PowerShell 5.1 and 7.
 function global:Get-ShellTerminalAppearance {
+    if (-not $env:WT_PROFILE_ID) { throw 'Kein Windows-Terminal-Tab aktiv. Starte das Profil Shell Control in Windows Terminal, um Themes, Fonts und CRT zu verwenden.' }
     $settingsPath = (Get-ShellTerminalSettingsPath)
     $settings = Read-ShellTerminalJson $settingsPath
     $profileId = $env:WT_PROFILE_ID
-    if (-not $profileId) { $profileId = $settings.defaultProfile }
     $profile = $settings.profiles.list | Where-Object guid -eq $profileId | Select-Object -First 1
     if (-not $profile) { throw 'Das aktuelle Terminal-Profil wurde nicht gefunden.' }
     $face = $settings.profiles.defaults.font.face
@@ -18,7 +18,8 @@ function global:Get-ShellTerminalAppearance {
     if ($profile.PSObject.Properties['experimental.pixelShaderPath']) {
         $shader=$profile.'experimental.pixelShaderPath'
     }
-    [pscustomobject]@{ ProfileId=$profile.guid; ProfileName=$profile.name; Font=$face; Size=$size; CRT=($crt -and -not $shader); CRTConfigured=$crt; ShaderPath=$shader }
+    $theme=if($profile.colorScheme){$profile.colorScheme}else{$settings.profiles.defaults.colorScheme}
+    [pscustomobject]@{ ProfileId=$profile.guid; ProfileName=$profile.name; Font=$face; Size=$size; CRT=($crt -and -not $shader); CRTConfigured=$crt; ShaderPath=$shader; Theme=$theme }
 }
 function global:Set-TerminalCrt {
     [CmdletBinding()]
