@@ -9,6 +9,9 @@ function global:prompt {
     }
     $promptUser = [Environment]::UserName
     $promptTime = [DateTime]::Now.ToString('HH:mm:ss')
+    if($Host.Name -eq 'Windows PowerShell ISE Host'){
+        return ($promptUser+' in '+$promptLocation+'  '+$promptTime+"`n"+[char]0x276F+' ')
+    }
     Write-Host $promptUser -ForegroundColor Yellow -NoNewline
     Write-Host ' in ' -ForegroundColor Gray -NoNewline
     Write-Host $promptLocation -ForegroundColor Cyan -NoNewline

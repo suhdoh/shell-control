@@ -103,6 +103,7 @@ function global:Set-TerminalFontSize {
         Write-Host ('Schriftgroesse: {0} pt' -f $appearance.Size)
         return
     }
+    if(Test-ShellIse){Set-ShellIseFont -Size $Size;return}
     if (-not $env:WT_PROFILE_ID) { throw 'Bitte font-size in Windows Terminal ausfuehren.' }
     $path = (Get-ShellTerminalSettingsPath)
     $snapshot=$null
@@ -437,6 +438,7 @@ function global:Get-ShellFontChoices {
 function global:Show-ShellMenu {
     [CmdletBinding()]param()
     $ErrorActionPreference='Stop'
+    if(Test-ShellIse){Show-ShellIseMenu;return}
     if($Host.Name -ne 'ConsoleHost' -or [Console]::IsInputRedirected){Show-CustomCommands;return}
     $previousEncoding=[Console]::OutputEncoding;$esc=[char]27
     $script:ShellMenuLanguage=$null;[void](Get-ShellMenuLanguage)

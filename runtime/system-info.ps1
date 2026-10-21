@@ -67,10 +67,40 @@ function global:Show-ShellFastfetch {
             }
         }
     }
+    if($Host.Name -eq 'Windows PowerShell ISE Host'){
+        foreach($module in $cfg.modules){
+            if($module -isnot [string] -and $module.format){
+                $module.format=$module.format.Replace(([string][char]27+'[22G'),(' '*22))
+            }
+        }
+    }
     $sessionConfig = Join-Path ([IO.Path]::GetTempPath()) ('fastfetch-session-' + [guid]::NewGuid().ToString('N') + '.jsonc')
     try {
         [IO.File]::WriteAllText($sessionConfig, ($cfg | ConvertTo-Json -Depth 15), (New-Object System.Text.UTF8Encoding($false)))
-        & $ffExe --config $sessionConfig
+        if($Host.Name -eq 'Windows PowerShell ISE Host'){
+            # ISE has no VT console. Read UTF-8 explicitly and render ordinary host text.
+            $start=New-Object Diagnostics.ProcessStartInfo
+            $start.FileName=$ffExe
+            $start.Arguments='--config "'+$sessionConfig+'" --pipe true'
+            $start.UseShellExecute=$false;$start.CreateNoWindow=$true
+            $start.RedirectStandardOutput=$true;$start.RedirectStandardError=$true
+            $start.StandardOutputEncoding=New-Object Text.UTF8Encoding($false)
+            $start.StandardErrorEncoding=New-Object Text.UTF8Encoding($false)
+            $process=New-Object Diagnostics.Process
+            $process.StartInfo=$start
+            try {
+                [void]$process.Start()
+                $outputTask=$process.StandardOutput.ReadToEndAsync()
+                $errorTask=$process.StandardError.ReadToEndAsync()
+                if(-not $process.WaitForExit(30000)){$process.Kill();throw 'Fastfetch did not finish within 30 seconds.'}
+                $process.WaitForExit()
+                $output=$outputTask.GetAwaiter().GetResult()
+                $errorText=$errorTask.GetAwaiter().GetResult()
+                if($process.ExitCode -ne 0){throw ('Fastfetch failed ('+$process.ExitCode+'): '+$errorText)}
+                $plain=[regex]::Replace($output,'\x1b\[[0-?]*[ -/]*[@-~]','')
+                Write-Host $plain.TrimEnd()
+            } finally {$process.Dispose()}
+        }else{& $ffExe --config $sessionConfig}
     } finally {
         if (Test-Path -LiteralPath $sessionConfig) { Remove-Item -LiteralPath $sessionConfig -Force }
     }

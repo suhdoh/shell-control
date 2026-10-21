@@ -3,7 +3,7 @@ param(
     [string]$InstallPath=(Join-Path $env:LOCALAPPDATA 'ShellControl'),
     [ValidateSet('Recommended','All')][string]$FontPack='Recommended',
     [switch]$SkipDependencies,[switch]$SkipFonts,[switch]$NoProfiles,[switch]$NoTerminal,
-    [switch]$PreserveTerminalProfiles,[switch]$NoInteractive,[switch]$RepairStartup,[switch]$Launch,
+    [switch]$PreserveTerminalProfiles,[switch]$NoInteractive,[switch]$RepairStartup,[switch]$Launch,[switch]$NoShortcuts,
     [string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),
     [string]$TerminalSettingsPath
 )
@@ -61,11 +61,15 @@ try {
                 # Only the current user's policy is adjusted; machine policy is never changed.
                 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
             }
-            Install-ShellProfiles -DocumentsPath $DocumentsPath -BackupRoot $backup
+            Install-ShellProfiles -DocumentsPath $DocumentsPath -BackupRoot $backup -RepairStartup:$RepairStartup
         }
     }
     $stages.CMD={Install-ShellCmd}
     if(-not $NoTerminal){$stages.Terminal={Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles) -RepairStartup:$RepairStartup}}
+    if($RepairStartup -and -not $NoShortcuts){$stages.Shortcuts={
+        $shortcutResult=Install-ShellStartupShortcuts -BackupRoot (Join-Path $backup 'shortcuts')
+        Send-ShellSetupProgress 100 ('PowerShell shortcuts repaired: '+@($shortcutResult.Repaired).Count)
+    }}
     Invoke-ShellSetupStages -Stages $stages
     [void](Update-ShellHardwareCache)
     Send-ShellSetupProgress 100 'Installation completed'
@@ -77,7 +81,8 @@ try {
 }
 Write-Host ('Installed: '+$InstallPath)
 Write-Host ('Backups:   '+$backup)
-Write-Host 'Open the Shell Control profile in Windows Terminal and run: shell-menu'
+if($RepairStartup){Write-Host 'Requested startup repair completed. Close and reopen PowerShell or ISE; run shell-menu to change settings.'}
+else{Write-Host 'Open PowerShell or ISE and run: shell-menu'}
 if($Launch){
     $terminal=Find-ShellExecutable wt.exe
     if(-not $terminal){throw 'Windows Terminal could not be found. Installation is complete; open the Shell Control profile after installing Windows Terminal.'}

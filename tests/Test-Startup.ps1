@@ -1,4 +1,4 @@
-﻿# Managed tabs skip foreign startup profiles and migrate only known Shell Control launchers.
+﻿# Startup repair covers managed tabs and the ordinary Windows Terminal PowerShell entries.
 & {
     $startupFixture=Join-Path ([IO.Path]::GetTempPath()) ('shell-control-startup-'+[guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory $startupFixture|Out-Null
@@ -9,9 +9,10 @@
         @'
 {
  "profiles":{"defaults":{},"list":[
-  {"guid":"{2947bb6d-5661-4ace-9b6d-842eab823451}","name":"Shell Control 7","commandline":"pwsh.exe -NoLogo","opacity":42,"colorScheme":"rose-pine"},
+  {"guid":"{2947bb6d-5661-4ace-9b6d-842eab823451}","name":"Shell Control 7","commandline":"pwsh.exe -NoLogo","opacity":42,"colorScheme":"rose-pine","font":{"face":"Personal Mono","size":19},"experimental.retroTerminalEffect":true},
   {"guid":"{2947bb6d-5661-4ace-9b6d-842eab823452}","name":"Shell Control 5","commandline":"powershell.exe -NoLogo"},
-  {"guid":"{00000000-0000-0000-0000-000000000003}","name":"Personal tools","commandline":"pwsh.exe -File toolkit.ps1"}
+  {"guid":"{00000000-0000-0000-0000-000000000003}","name":"Personal tools","commandline":"pwsh.exe -File toolkit.ps1"},
+  {"guid":"{574e775e-4f2a-5b96-ac1e-a2962a402336}","source":"Windows.Terminal.PowershellCore","name":"PowerShell 7 (x64)","commandline":"pwsh.exe","font":{"face":"Consolas","size":12},"colorScheme":"Campbell","experimental.retroTerminalEffect":false,"historySize":1234}
  ]},
  "schemes":[]
 }
@@ -25,6 +26,7 @@
         }
         Assert ($settings.profiles.list[0].opacity -eq 42 -and $settings.profiles.list[0].colorScheme -eq 'rose-pine') 'Launcher migration reset a customized appearance'
         Assert ($settings.profiles.list[2].commandline -eq 'pwsh.exe -File toolkit.ps1') 'Launcher migration changed an unrelated profile'
+        Assert ($settings.profiles.list[3].commandline -eq 'pwsh.exe' -and $settings.profiles.list[3].font.face -eq 'Consolas') 'Ordinary reinstallation changed a standard PowerShell entry without explicit repair'
         $custom='pwsh.exe -NoProfile -File personal-launcher.ps1'
         $settings.profiles.list[0].commandline=$custom
         [IO.File]::WriteAllText($global:ShellControlSettingsPath,($settings|ConvertTo-Json -Depth 30))
@@ -34,6 +36,17 @@
         $repaired=Read-ShellTerminalJson $global:ShellControlSettingsPath
         Assert ($repaired.profiles.list[0].commandline -eq ('pwsh.exe -NoLogo -NoProfile -NoExit -File "'+$entry+'"')) 'Explicit startup repair did not replace a conflicting managed launcher'
         Assert ($repaired.profiles.list[0].opacity -eq 42 -and $repaired.profiles.list[0].colorScheme -eq 'rose-pine' -and $repaired.profiles.list[2].commandline -eq 'pwsh.exe -File toolkit.ps1') 'Explicit startup repair changed appearance or an unrelated profile'
+        foreach($pair in @(@{Guid='{574e775e-4f2a-5b96-ac1e-a2962a402336}';Managed='{2947bb6d-5661-4ace-9b6d-842eab823451}'},@{Guid='{61c54bbd-c2c6-5271-96e7-009a87ff44bf}';Managed='{2947bb6d-5661-4ace-9b6d-842eab823452}'})){
+            $standard=$repaired.profiles.list|Where-Object guid -eq $pair.Guid|Select-Object -First 1
+            $managed=$repaired.profiles.list|Where-Object guid -eq $pair.Managed|Select-Object -First 1
+            Assert ($standard.commandline -eq $managed.commandline) 'An ordinary PowerShell Terminal entry still loads personal or system startup code'
+        }
+        $standard7=$repaired.profiles.list|Where-Object guid -eq '{574e775e-4f2a-5b96-ac1e-a2962a402336}'|Select-Object -First 1
+        Assert ($standard7.font.face -eq 'Personal Mono' -and $standard7.font.size -eq 19 -and $standard7.colorScheme -eq 'rose-pine' -and $standard7.opacity -eq 42 -and $standard7.'experimental.retroTerminalEffect' -eq $true) 'The ordinary PowerShell 7 tab did not inherit the saved font, theme and CRT selection'
+        Assert ($standard7.name -eq 'PowerShell 7 (x64)' -and $standard7.historySize -eq 1234 -and $standard7.source -eq 'Windows.Terminal.PowershellCore') 'Startup repair replaced unrelated standard-profile metadata'
+        Install-ShellTerminal -SetDefault -RepairStartup
+        $repeated=Read-ShellTerminalJson $global:ShellControlSettingsPath
+        Assert (@($repeated.profiles.list).Count -eq @($repaired.profiles.list).Count) 'Repeated repair duplicated a standard PowerShell profile'
         $env:WT_PROFILE_ID=$null
         $failure=$null
         try {Get-ShellTerminalAppearance|Out-Null}catch{$failure=$_.Exception.Message}
@@ -55,7 +68,7 @@
             $output=Join-Path $startupFixture 'install.out.log'
             $errorLog=Join-Path $startupFixture 'install.err.log'
             # NoProfiles avoids altering execution policy or real user startup files.
-            $arguments=@('-NoLogo','-NoProfile','-File',('"'+$installer+'"'),'-InstallPath',('"'+$installRoot+'"'),'-TerminalSettingsPath',('"'+$installSettings+'"'),'-SkipDependencies','-SkipFonts','-NoProfiles','-NoInteractive','-RepairStartup')
+            $arguments=@('-NoLogo','-NoProfile','-File',('"'+$installer+'"'),'-InstallPath',('"'+$installRoot+'"'),'-TerminalSettingsPath',('"'+$installSettings+'"'),'-SkipDependencies','-SkipFonts','-NoProfiles','-NoShortcuts','-NoInteractive','-RepairStartup')
             $process=Microsoft.PowerShell.Management\Start-Process -FilePath $hostPath -ArgumentList $arguments -RedirectStandardOutput $output -RedirectStandardError $errorLog -Wait -PassThru
             if($process.ExitCode -ne 0){throw ('Configuration installer failed: '+(Get-Content $output,$errorLog -Raw|Out-String))}
             $installed=Read-ShellTerminalJson $installSettings
@@ -79,4 +92,4 @@
         Remove-Item -LiteralPath $startupFixture -Recurse -Force
     }
 }
-Write-Host 'PASS startup checks: clean launchers, legacy migration, preserved customizations and accurate console status'
+Write-Host 'PASS startup checks: clean managed and ordinary PowerShell launchers, saved appearance, legacy migration and accurate console status'

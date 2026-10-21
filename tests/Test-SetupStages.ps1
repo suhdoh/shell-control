@@ -11,10 +11,11 @@
     try {
         $global:ShellControlSettingsPath=$stageTerminal
         $calls=New-Object 'Collections.Generic.List[string]'
+        $stageBackup=Join-Path $stageFixture 'backups'
         $stages=[ordered]@{
             Dependencies={[void]$calls.Add('Dependencies');throw 'simulated WinGet failure'}
             Fonts={[void]$calls.Add('Fonts');Write-Error 'simulated font failure'}
-            Profiles={[void]$calls.Add('Profiles');Install-ShellProfiles -DocumentsPath $stageDocuments -BackupRoot (Join-Path $stageFixture 'backups')}
+            Profiles={[void]$calls.Add('Profiles');Install-ShellProfiles -DocumentsPath $stageDocuments -BackupRoot $stageBackup}
             CMD={[void]$calls.Add('CMD');Install-ShellCmd}
             Terminal={[void]$calls.Add('Terminal');Install-ShellTerminal -SetDefault}
         }
@@ -27,10 +28,14 @@
         Assert ($profileText.Contains(". '"+(Join-Path $global:ShellControlRoot 'Initialize.ps1').Replace("'","''")+"'")) 'Partial setup did not add the runtime import'
         $settings=Read-ShellTerminalJson $stageTerminal
         Assert (@($settings.schemes).Count -eq 18 -and @($settings.profiles.list).Count -eq 3) 'Partial setup did not configure Terminal'
+        $originalBackup=Join-Path $stageBackup 'PowerShell-profile.ps1'
+        $originalBackupHash=(Read-ShellTextSnapshot $originalBackup).Hash
+        $stageBackup=Join-Path $stageFixture 'backups-retry'
         $stages.Dependencies={}
         $stages.Fonts={}
         Invoke-ShellSetupStages -Stages $stages
         $profileText=Get-Content -LiteralPath $stageProfile -Raw -Encoding UTF8
+        Assert ((Read-ShellTextSnapshot $originalBackup).Hash -eq $originalBackupHash) 'Retry overwrote the original startup backup'
         Assert ([regex]::Matches($profileText,'# BEGIN SHELL CONTROL').Count -eq 1) 'Retry duplicated the startup import'
         $settings=Read-ShellTerminalJson $stageTerminal
         Assert (@($settings.schemes).Count -eq 18 -and @($settings.profiles.list).Count -eq 3) 'Retry duplicated Terminal configuration'

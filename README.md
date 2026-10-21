@@ -46,7 +46,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Install.ps1
 
 Setup installs Windows Terminal, PowerShell 7, Fastfetch, eza, Gum and Oh My Posh. Start setup from a regular, non-administrator terminal. Only the dependency-installation worker requests UAC elevation when needed; font and configuration workers stay in the original user's context. An already elevated parent process passes its elevation to its children. Package and font tasks show progress inside the menu.
 
-The default destination is `%LOCALAPPDATA%\ShellControl`. Existing PowerShell profiles are backed up. Console sessions load Shell Control last from the current-host profile; ISE uses the shared profile. Existing Terminal profiles are retained; three Shell Control profiles are added for PowerShell 7, Windows PowerShell 5.1 and CMD. The dedicated PowerShell profiles start without loading personal or system profiles, then initialize Shell Control directly. This prevents other startup banners and prompt engines from overriding Shell Control in those tabs; the original toolkit files and regular profiles remain available. ISE loads the shared functions without the console greeting or menu.
+The default destination is `%LOCALAPPDATA%\ShellControl`. Existing PowerShell profiles are backed up. Console sessions and ISE load Shell Control last from their respective current-host profiles. Existing Terminal profiles are retained; three Shell Control profiles are added for PowerShell 7, Windows PowerShell 5.1 and CMD. The dedicated PowerShell profiles start without loading personal or system profiles, then initialize Shell Control directly. This prevents other startup banners and prompt engines from overriding Shell Control in those tabs; the original toolkit files and regular profiles remain available. ISE loads the native prompt and a plain-text Fastfetch greeting, and opens its settings in a graphical menu. ISE stores its font, size and theme separately from Windows Terminal.
 
 Choose a dedicated empty installation directory, or an existing recognized Shell Control installation. Setup rejects drive roots, system directories, populated unrelated folders, source-checkout overlaps and installation paths through junctions or symbolic links.
 
@@ -70,20 +70,20 @@ shell-menu
 # Configure an existing installation without downloading programs or fonts.
 .\Install.ps1 -SkipDependencies -SkipFonts
 
-# Restore the native prompt and a clean startup, then open the Shell Control tab.
+# Repair normal PS5, PS7 and ISE startup; back up and replace old user profile code.
 .\Install.ps1 -RepairStartup -Launch
 
 # Custom destination.
 .\Install.ps1 -InstallPath D:\ShellControl
 ```
 
-`-NoProfiles`, `-NoTerminal` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. If a dependency or font installation fails, setup still attempts the independent profile and Terminal configuration, then reports the failed stages. A partial setup is not reported as a completed installation. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained. `-RepairStartup` explicitly selects the native prompt, enables the Fastfetch greeting and replaces the launch commands of the two managed PowerShell profiles, including customized ones. Font, color and CRT selections remain intact. It cannot be combined with `-NoTerminal` or `-PreserveTerminalProfiles`. `-Launch` opens the configured Shell Control profile in Windows Terminal after successful setup.
+`-NoProfiles`, `-NoTerminal`, `-NoShortcuts` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. If a dependency or font installation fails, setup still attempts the independent profile and Terminal configuration, then reports the failed stages. A partial setup is not reported as a completed installation. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained. `-RepairStartup` explicitly selects the native prompt and enables Fastfetch. It backs up all five current-user startup profiles for PS5, PS7 and ISE before replacing their previous startup code, disabling old banners and prompt initializers such as BitHawk. It also repairs the ordinary PS5/PS7 Terminal profiles and standard user Start Menu, Desktop and taskbar shortcuts, preserving the selected Terminal appearance. Machine Start Menu shortcuts receive a user-specific counterpart. Script and administrator shortcuts are retained. Existing Windows 11 taskbar pins may cache their old target; unpin and pin the repaired Start Menu entry once if needed. `-NoShortcuts` skips shortcut changes. Direct executable launches still follow the flags supplied by their caller; machine-wide profiles are not edited. It cannot be combined with `-NoTerminal` or `-PreserveTerminalProfiles`. `-Launch` opens the configured Shell Control profile in Windows Terminal after successful setup.
 
 Terminal and profile changes use a temporary file followed by replacement, with unique backups in `.shell-control-backups` beside the edited file. Detected changes since reading cause the save to abort rather than overwrite a newer version. These protections do not provide a transaction or automatic rollback for the entire installation. See [SECURITY.md](SECURITY.md) for the scope and remaining limitations.
 
 ## Themes and fonts
 
-Theme families include Amber 340, Osaka Jade, Matrix, Dark Crimson, SynthWave 84, Rosé Pine, Catppuccin and Gruvbox. Rosé Pine, Catppuccin and Gruvbox variants are nested beneath their families. Fonts and prompts use the Terminal palette where supported. Bundled themes remain selectable before their first import; selecting one adds its scheme when needed. Theme, font and CRT controls require a Windows Terminal tab; starting `pwsh.exe` in the classic Windows Console cannot apply Terminal appearance settings. A custom pixel shader takes precedence over CRT; disable it in Terminal settings before enabling the CRT effect. When multiple Terminal installations contain the same active profile, select the settings file explicitly with `-TerminalSettingsPath`; setup retains that choice for later sessions and menu workers.
+Theme families include Amber 340, Osaka Jade, Matrix, Dark Crimson, SynthWave 84, Rosé Pine, Catppuccin and Gruvbox. Rosé Pine, Catppuccin and Gruvbox variants are nested beneath their families. Fonts and prompts use the Terminal palette where supported. Bundled themes remain selectable before their first import; selecting one adds its scheme when needed. Terminal appearance controls require a Windows Terminal tab; starting `pwsh.exe` in the classic Windows Console cannot apply Terminal appearance settings. In ISE, `shell-menu`, `font`, `font-size` and `theme` use the ISE settings and reapply them at startup; CRT is available only in Windows Terminal. A custom pixel shader takes precedence over CRT; disable it in Terminal settings before enabling the CRT effect. When multiple Terminal installations contain the same active profile, select the settings file explicitly with `-TerminalSettingsPath`; setup retains that choice for later sessions and menu workers.
 
 The verified font catalog contains 85 families. The full pack downloads 63 upstream Nerd Font archives; the recommended pack contains Terminess, Gohu, JetBrains Mono, Cascadia Mono, IBM Plex Mono and Meslo. Archives are pinned to Nerd Fonts v3.5.1 and checked against SHA-256 digests. Font licenses are copied with the installed files. Fonts that lack the required symbols or have incompatible character metrics are excluded. No font binaries are redistributed in this repository.
 
@@ -117,7 +117,7 @@ In system info, use arrow keys or Page Up / Page Down to scroll, `R` to refresh 
 .\Uninstall.ps1
 ```
 
-This removes the managed PowerShell import blocks. Runtime files, fonts, dependencies and Terminal settings are deliberately retained. Restore Terminal settings from the installation's `backups` folder to revert the imported themes and profiles.
+This removes the managed PowerShell import blocks and restores repaired shortcuts whose contents still match the generated version. User-edited shortcuts are retained. Earlier profile contents disabled by `-RepairStartup` can be restored from the installer backup folder. Runtime files, fonts, dependencies and Terminal settings are deliberately retained. Restore Terminal settings from the installation's `backups` folder to revert the imported themes and profiles.
 
 The remover only targets imports matching `-InstallPath`. Profile-removal backups and backups from individual menu changes are stored beside their files in `.shell-control-backups`.
 
@@ -128,7 +128,7 @@ powershell.exe -NoProfile -File .\tests\Test-Project.ps1
 pwsh -NoProfile -File .\tests\Test-Project.ps1
 ```
 
-Tests use isolated settings and profile fixtures. They do not install programs, register fonts or change real Terminal settings. A fresh-machine installation is a separate integration check.
+Tests use isolated settings, profile and Windows shortcut fixtures, plus a simulated ISE host; the graphical ISE window still requires an interactive Windows check. They do not install programs, register fonts or change real Terminal settings. A fresh-machine installation is a separate integration check.
 
 ## Credits
 

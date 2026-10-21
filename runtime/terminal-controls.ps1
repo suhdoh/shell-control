@@ -1,5 +1,6 @@
 ﻿# Windows Terminal profile controls shared by PowerShell 5.1 and 7.
 function global:Get-ShellTerminalAppearance {
+    if(Test-ShellIse){return (Get-ShellIseAppearance)}
     if (-not $env:WT_PROFILE_ID) { throw 'Kein Windows-Terminal-Tab aktiv. Starte das Profil Shell Control in Windows Terminal, um Themes, Fonts und CRT zu verwenden.' }
     $settingsPath = (Get-ShellTerminalSettingsPath)
     $settings = Read-ShellTerminalJson $settingsPath
@@ -24,6 +25,10 @@ function global:Get-ShellTerminalAppearance {
 function global:Set-TerminalCrt {
     [CmdletBinding()]
     param([Parameter(Position=0)][ValidateSet('on','off','toggle','status')][string]$Mode='status', [switch]$Reload)
+    if(Test-ShellIse){
+        if($Mode -in @('status','off')){Write-Host 'CRT: nicht verfügbar in PowerShell ISE (Windows Terminal erforderlich).';return}
+        throw 'PowerShell ISE unterstützt keinen CRT-Effekt. CRT erfordert Windows Terminal.'
+    }
     if (-not $env:WT_PROFILE_ID) { throw 'Bitte crt in einem Windows-Terminal-Tab ausfuehren.' }
     $appearance = Get-ShellTerminalAppearance
     if ($Mode -ne 'status') {
@@ -63,6 +68,7 @@ function global:Set-TerminalTheme {
         [Parameter(Position=0)][string]$Name='status',
         [switch]$Reload
     )
+    if(Test-ShellIse){Set-ShellIseTheme -Name $Name;return}
     $settingsPath = (Get-ShellTerminalSettingsPath)
     $snapshot=$null
     $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
@@ -129,6 +135,12 @@ function global:Set-TerminalFont {
         [ValidateRange(6,72)][double]$Size,
         [switch]$Reload
     )
+    if(Test-ShellIse){
+        $iseParameters=@{Name=$Name}
+        if($PSBoundParameters.ContainsKey('Size')){$iseParameters.Size=$Size}
+        Set-ShellIseFont @iseParameters
+        return
+    }
     $catalog = @(Get-ShellFontChoices)
     if ($Name -in @('list','ls')) {
         $catalog | Sort-Object Family | Select-Object @{Name='Befehl';Expression={'font '+$_.Shortcut}},Family,Description

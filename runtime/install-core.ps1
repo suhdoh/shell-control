@@ -123,29 +123,47 @@ public static class ShellControlFontApi {
     Send-ShellSetupProgress 100 ('Fonts ready: '+$Pack)
 }
 function global:Install-ShellProfiles {
-    param([string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),[string]$BackupRoot=(Join-Path $global:ShellControlRoot ('backups\'+(Get-Date -Format yyyyMMdd-HHmmss)+'-'+[guid]::NewGuid().ToString('N'))))
+    param([string]$DocumentsPath=([Environment]::GetFolderPath('MyDocuments')),
+        [string]$BackupRoot=(Join-Path $global:ShellControlRoot ('backups\'+(Get-Date -Format yyyyMMdd-HHmmss)+'-'+[guid]::NewGuid().ToString('N'))),
+        [switch]$RepairStartup)
     New-Item -ItemType Directory -Path $BackupRoot -Force|Out-Null
     $entry=(Join-Path $global:ShellControlRoot 'Initialize.ps1').Replace("'","''")
-    foreach($version in @('PowerShell','WindowsPowerShell')){
+    $profiles=@(foreach($version in @('PowerShell','WindowsPowerShell')){
         $folder=Join-Path $DocumentsPath $version
         New-Item -ItemType Directory -Path $folder -Force|Out-Null
-        foreach($name in @('profile.ps1','Microsoft.PowerShell_profile.ps1')){
+        $names=@('profile.ps1','Microsoft.PowerShell_profile.ps1')
+        if($version -eq 'WindowsPowerShell'){$names+='Microsoft.PowerShellISE_profile.ps1'}
+        foreach($name in $names){
             $path=Join-Path $folder $name
-            $snapshot=Read-ShellTextSnapshot $path
-            $text=$snapshot.Text
-            if($snapshot.Exists){Copy-Item -LiteralPath $path -Destination (Join-Path $BackupRoot ($version+'-'+$name))}
+            [pscustomobject]@{Name=$name;Path=$path;Snapshot=(Read-ShellTextSnapshot $path);Backup=(Join-Path $BackupRoot ($version+'-'+$name))}
+        }
+    })
+    # Save every original byte before disabling startup code during an explicit repair.
+    # Refuse to overwrite an earlier backup or continue after a concurrent edit.
+    foreach($profile in $profiles){
+        if($profile.Snapshot.Exists){
+            [IO.File]::Copy($profile.Path,$profile.Backup,$false)
+            if((Get-ShellBytesHash ([IO.File]::ReadAllBytes($profile.Backup))) -ne $profile.Snapshot.Hash){
+                throw ('The startup profile changed while it was being backed up. No profiles were updated: '+$profile.Path)
+            }
+        }
+    }
+    foreach($profile in $profiles){
+        $text=$profile.Snapshot.Text
+        if($RepairStartup){$text=''}else{
             # Do not let an incomplete outer marker consume a later managed block.
             $text=[regex]::Replace($text,'(?ms)^# BEGIN SHELL CONTROL\r?\n(?:(?!^# BEGIN SHELL CONTROL\r?$).)*?^# END SHELL CONTROL\r?\n?','')
             # Migrate this installation's earlier direct imports, retaining unrelated user functions.
             $legacy=[regex]::Escape($global:ShellControlRoot.TrimEnd('\').Replace("'","''"))
             $text=[regex]::Replace($text,"(?m)^\s*\.\s+'"+$legacy+"[\\/](?:Initialize|prompt|listing|terminal-controls|system-info|shell-menu|greeting)\.ps1'\s*\r?$",'')
-            $body=if($name -eq 'profile.ps1'){
-                # ConsoleHost loads its host-specific profile later, after other prompt initializers.
-                "if (`$Host.Name -ne 'ConsoleHost') {`r`n    . '$entry'`r`n}`r`n"
-            }else{". '$entry'`r`n"}
-            $block="# BEGIN SHELL CONTROL`r`n"+$body+"# END SHELL CONTROL`r`n"
-            Write-ShellAtomicText -Path $path -Text ($text.TrimEnd()+"`r`n`r`n"+$block) -ExpectedHash $snapshot.Hash -Bom
         }
+        $body=if($profile.Name -eq 'profile.ps1'){
+            # These hosts load a later, host-specific profile. Other hosts use this shared entry.
+            "if (`$Host.Name -ne 'ConsoleHost' -and `$Host.Name -ne 'Windows PowerShell ISE Host') {`r`n    . '$entry'`r`n}`r`n"
+        }else{". '$entry'`r`n"}
+        $block="# BEGIN SHELL CONTROL`r`n"+$body+"# END SHELL CONTROL`r`n"
+        $updated=if($text.TrimEnd()){$text.TrimEnd()+"`r`n`r`n"+$block}else{$block}
+        Write-ShellAtomicText -Path $profile.Path -Text $updated -ExpectedHash $profile.Snapshot.Hash -Bom
     }
     Send-ShellSetupProgress 100 'PowerShell 5.1, ISE and PowerShell 7 profiles ready'
 }
@@ -195,6 +213,33 @@ function global:Install-ShellTerminal {
             $profile|Add-Member useAcrylic $true
             $profile|Add-Member opacity 75
             $settings.profiles.list=@($settings.profiles.list|Where-Object guid -ne $profile.guid)+@($profile)
+        }
+        if($RepairStartup){
+            # Ordinary Terminal tabs keep their standard GUIDs even when selected explicitly.
+            # Overlay them as well as our own profiles so an existing PowerShell entry is repaired.
+            $standardProfiles=@(
+                @{guid='{574e775e-4f2a-5b96-ac1e-a2962a402336}';name='PowerShell';source='Windows.Terminal.PowershellCore';managed=$profiles[0].guid},
+                @{guid='{61c54bbd-c2c6-5271-96e7-009a87ff44bf}';name='Windows PowerShell';managed=$profiles[1].guid}
+            )
+            $appearanceProperties=@('font','colorScheme','cursorColor','background','foreground','selectionBackground','opacity','useAcrylic','acrylicOpacity','backgroundImage','backgroundImageOpacity','backgroundImageStretchMode','backgroundImageAlignment','experimental.retroTerminalEffect','experimental.pixelShaderPath','experimental.pixelShaderImagePath')
+            foreach($definition in $standardProfiles){
+                $managed=$settings.profiles.list|Where-Object guid -eq $definition.managed|Select-Object -First 1
+                $standard=$settings.profiles.list|Where-Object guid -eq $definition.guid|Select-Object -First 1
+                if(-not $standard){
+                    $standard=[pscustomobject]@{guid=$definition.guid;name=$definition.name}
+                    if($definition.source){$standard|Add-Member source $definition.source}
+                    $settings.profiles.list=@($settings.profiles.list)+@($standard)
+                }
+                $standard|Add-Member -NotePropertyName commandline -NotePropertyValue $managed.commandline -Force
+                foreach($property in $appearanceProperties){
+                    if($managed.PSObject.Properties[$property]){
+                        $standard|Add-Member -NotePropertyName $property -NotePropertyValue $managed.$property -Force
+                    }else{
+                        # Inherit the same Terminal defaults instead of an older per-profile override.
+                        $standard.PSObject.Properties.Remove($property)
+                    }
+                }
+            }
         }
         if($SetDefault){$settings|Add-Member -NotePropertyName defaultProfile -NotePropertyValue $profiles[0].guid -Force}
     }
