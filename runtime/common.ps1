@@ -22,11 +22,30 @@ function global:Find-ShellExecutable {
 }
 function global:Get-ShellTerminalSettingsPath {
     if($global:ShellControlSettingsPath){return $global:ShellControlSettingsPath}
+    $preferences=Get-ShellControlPreferences
+    if($preferences.terminalSettingsPath){return $preferences.terminalSettingsPath}
+    $paths=@()
     foreach($relative in @('Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json','Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json','Microsoft\Windows Terminal\settings.json')){
         $path=Join-Path $env:LOCALAPPDATA $relative
-        if(Test-Path -LiteralPath $path){return $path}
+        if(Test-Path -LiteralPath $path){$paths+=$path}
     }
-    throw 'Windows Terminal settings were not found. Install and open Windows Terminal once, then retry.'
+    if(-not $paths.Count){throw [IO.FileNotFoundException] 'Windows Terminal settings were not found. Install and open Windows Terminal once, then retry.'}
+    # Setup outside Terminal retains the established stable/Preview/unpackaged order.
+    if(-not $env:WT_PROFILE_ID){return $paths[0]}
+    $matching=@();$unreadable=@()
+    foreach($path in $paths){
+        try {
+            $settings=Read-ShellTerminalJson $path
+            if(@($settings.profiles.list|Where-Object guid -eq $env:WT_PROFILE_ID).Count){$matching+=$path}
+        } catch {$unreadable+=$path}
+    }
+    $guidance='Use Install.ps1 -TerminalSettingsPath <path> during setup, or set $global:ShellControlSettingsPath to the correct settings.json in this session.'
+    if($unreadable.Count){
+        throw ('Cannot safely select Windows Terminal settings because these files could not be read: '+($unreadable -join '; ')+'. '+$guidance)
+    }
+    if($matching.Count -eq 1){return $matching[0]}
+    if($matching.Count -gt 1){throw ('The current Terminal profile appears in multiple settings files: '+($matching -join '; ')+'. '+$guidance)}
+    throw ('The current Terminal profile was not found in these settings files: '+($paths -join '; ')+'. '+$guidance)
 }
 function global:Get-ShellControlPreferences {
     $path=Join-Path $global:ShellControlRoot 'menu-settings.json'
@@ -58,10 +77,18 @@ function global:Get-ShellHardwareCache {
     if(Test-Path -LiteralPath $path){return (Get-Content -LiteralPath $path -Raw -Encoding UTF8|ConvertFrom-Json)}
     Update-ShellHardwareCache
 }
+function global:Get-ShellTerminalSchemes {
+    param($Settings)
+    if(-not $PSBoundParameters.ContainsKey('Settings')){$Settings=Read-ShellTerminalJson (Get-ShellTerminalSettingsPath)}
+    $existing=@($Settings.schemes|Where-Object {$_ -and $_.name})
+    $names=@($existing|ForEach-Object name)
+    $bundled=Get-Content -LiteralPath (Join-Path $global:ShellControlRoot 'assets/themes.json') -Raw -Encoding UTF8|ConvertFrom-Json
+    @($existing)+@($bundled|Where-Object name -notin $names)
+}
 function global:Get-ShellThemeFamilies {
-    $settings=Read-ShellTerminalJson (Get-ShellTerminalSettingsPath)
+    $schemes=@(Get-ShellTerminalSchemes)
     $groups=[ordered]@{}
-    foreach($scheme in ($settings.schemes|Sort-Object name)){
+    foreach($scheme in ($schemes|Sort-Object name)){
         $name=$scheme.name
         $family=switch -Regex ($name){'^rose-pine'{'Rosé Pine';break} '^Catppuccin'{'Catppuccin';break} '^Gruvbox'{'Gruvbox';break} default{$name}}
         if(-not $groups.Contains($family)){$groups[$family]=@()}

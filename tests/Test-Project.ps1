@@ -103,6 +103,12 @@ foreach($file in $textFiles){
     $text=Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8
     Assert ($text -notmatch '(?i)C:\\Users\\[^\\"\s]+') ('Machine-specific data: '+$file.Name)
 }
+. (Join-Path $PSScriptRoot 'Test-Dependencies.ps1')
+. (Join-Path $PSScriptRoot 'Test-SetupStages.ps1')
+. (Join-Path $PSScriptRoot 'Test-MenuColors.ps1')
+. (Join-Path $PSScriptRoot 'Test-Appearance.ps1')
+. (Join-Path $PSScriptRoot 'Test-Fonts.ps1')
+. (Join-Path $PSScriptRoot 'Test-TerminalSettings.ps1')
 . (Join-Path $PSScriptRoot 'Test-Safety.ps1')
 $global:LASTEXITCODE=0
 Write-Progress -Activity 'Shell Control setup' -Completed

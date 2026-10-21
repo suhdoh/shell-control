@@ -34,28 +34,33 @@ foreach($notice in @('LICENSE','THIRD-PARTY.md','FONT-CREDITS.md','SECURITY.md')
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot $notice) -Destination (Join-Path $InstallPath $notice) -Force
 }
 $global:ShellControlRoot=$InstallPath
-if($TerminalSettingsPath){$global:ShellControlSettingsPath=$TerminalSettingsPath}
-. (Join-Path $InstallPath 'common.ps1')
-. (Join-Path $InstallPath 'install-core.ps1')
-. (Join-Path $InstallPath 'shell-menu.ps1')
+if($TerminalSettingsPath){$global:ShellControlSettingsPath=[IO.Path]::GetFullPath($TerminalSettingsPath)}
+. (Join-Path $InstallPath 'Initialize.ps1')
+if($TerminalSettingsPath){Set-ShellControlPreference terminalSettingsPath $global:ShellControlSettingsPath}
 $interactive=-not $NoInteractive -and $Host.Name -eq 'ConsoleHost' -and -not [Console]::IsOutputRedirected
 $esc=[char]27
 if($interactive){[Console]::Write("$esc[?1049h");$script:ShellSetupProgress={param($p,$m) Show-ShellSetupProgress $p $m}}
 try {
+    $stages=[ordered]@{}
     if(-not $SkipDependencies){
-        $admin=([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-        if($admin){Install-ShellDependencies}else{Invoke-ShellSetup -Component Dependencies}
-    }
-    if(-not $SkipFonts){Install-ShellFonts -Pack $FontPack}
-    if(-not $NoProfiles){
-        if((Get-ExecutionPolicy -Scope CurrentUser) -in @('Undefined','Restricted') -and (Get-ExecutionPolicy -Scope LocalMachine) -in @('Undefined','Restricted') -and (Get-ExecutionPolicy -Scope MachinePolicy) -eq 'Undefined' -and (Get-ExecutionPolicy -Scope UserPolicy) -eq 'Undefined'){
-            # Only the current user's policy is adjusted; machine policy is never changed.
-            Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+        $stages.Dependencies={
+            $admin=([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+            if($admin){Install-ShellDependencies}else{Invoke-ShellSetup -Component Dependencies}
         }
-        Install-ShellProfiles -DocumentsPath $DocumentsPath -BackupRoot $backup
     }
-    Install-ShellCmd
-    if(-not $NoTerminal){Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles)}
+    if(-not $SkipFonts){$stages.Fonts={Install-ShellFonts -Pack $FontPack}}
+    if(-not $NoProfiles){
+        $stages.Profiles={
+            if((Get-ExecutionPolicy -Scope CurrentUser) -in @('Undefined','Restricted') -and (Get-ExecutionPolicy -Scope LocalMachine) -in @('Undefined','Restricted') -and (Get-ExecutionPolicy -Scope MachinePolicy) -eq 'Undefined' -and (Get-ExecutionPolicy -Scope UserPolicy) -eq 'Undefined'){
+                # Only the current user's policy is adjusted; machine policy is never changed.
+                Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+            }
+            Install-ShellProfiles -DocumentsPath $DocumentsPath -BackupRoot $backup
+        }
+    }
+    $stages.CMD={Install-ShellCmd}
+    if(-not $NoTerminal){$stages.Terminal={Install-ShellTerminal -PreserveProfiles:$PreserveTerminalProfiles -SetDefault:(-not $PreserveTerminalProfiles)}}
+    Invoke-ShellSetupStages -Stages $stages
     [void](Update-ShellHardwareCache)
     Send-ShellSetupProgress 100 'Installation completed'
     $receipt=[pscustomobject]@{Version='0.1.2';Installed=(Get-Date -Format o);Root=$InstallPath;Documents=$DocumentsPath;Backup=$backup;FontPack=$FontPack}

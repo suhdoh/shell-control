@@ -14,7 +14,11 @@ function global:Get-ShellTerminalAppearance {
     if ($profile.PSObject.Properties['experimental.retroTerminalEffect']) {
         $crt = [bool]$profile.'experimental.retroTerminalEffect'
     }
-    [pscustomobject]@{ ProfileId=$profile.guid; ProfileName=$profile.name; Font=$face; Size=$size; CRT=$crt }
+    $shader=$settings.profiles.defaults.'experimental.pixelShaderPath'
+    if ($profile.PSObject.Properties['experimental.pixelShaderPath']) {
+        $shader=$profile.'experimental.pixelShaderPath'
+    }
+    [pscustomobject]@{ ProfileId=$profile.guid; ProfileName=$profile.name; Font=$face; Size=$size; CRT=($crt -and -not $shader); CRTConfigured=$crt; ShaderPath=$shader }
 }
 function global:Set-TerminalCrt {
     [CmdletBinding()]
@@ -27,6 +31,9 @@ function global:Set-TerminalCrt {
         $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
         $profile = $settings.profiles.list | Where-Object guid -eq $appearance.ProfileId | Select-Object -First 1
         $enabled = if ($Mode -eq 'toggle') { -not $appearance.CRT } else { $Mode -eq 'on' }
+        if ($enabled -and $appearance.ShaderPath) {
+            throw 'CRT kann nicht aktiviert werden: Ein benutzerdefinierter Pixelshader ist aktiv und hat in Windows Terminal Vorrang. Deaktiviere ihn zuerst in den Terminal-Einstellungen.'
+        }
         $profile | Add-Member -NotePropertyName 'experimental.retroTerminalEffect' -NotePropertyValue ([bool]$enabled) -Force
         Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
         $appearance = Get-ShellTerminalAppearance
@@ -59,7 +66,7 @@ function global:Set-TerminalTheme {
     $snapshot=$null
     $settings = Read-ShellTerminalJson $settingsPath -Snapshot ([ref]$snapshot)
     if ($Name -in @('list','ls')) {
-        $settings.schemes | Sort-Object name | Select-Object -ExpandProperty name
+        Get-ShellTerminalSchemes -Settings $settings | Sort-Object name | Select-Object -ExpandProperty name
         return
     }
     if (-not $env:WT_PROFILE_ID) { throw 'Bitte theme in einem Windows-Terminal-Tab ausfuehren.' }
@@ -99,8 +106,11 @@ function global:Set-TerminalTheme {
         'gruvbox-light-soft' { 'Gruvbox Light Soft' }
         default { $Name }
     }
-    $scheme = $settings.schemes | Where-Object name -eq $target | Select-Object -First 1
+    $scheme = Get-ShellTerminalSchemes -Settings $settings | Where-Object name -eq $target | Select-Object -First 1
     if (-not $scheme) { throw ('Theme nicht gefunden: {0}. Verfuegbare Themes: theme list' -f $target) }
+    if (-not @($settings.schemes|Where-Object name -eq $scheme.name).Count) {
+        $settings | Add-Member -NotePropertyName schemes -NotePropertyValue (@($settings.schemes|Where-Object {$_})+@($scheme)) -Force
+    }
     $profile | Add-Member -NotePropertyName colorScheme -NotePropertyValue $scheme.name -Force
     if ($scheme.cursorColor) {
         $profile | Add-Member -NotePropertyName cursorColor -NotePropertyValue $scheme.cursorColor -Force
@@ -143,7 +153,9 @@ function global:Set-TerminalFont {
     if (-not $profile.font) { $profile | Add-Member -NotePropertyName font -NotePropertyValue ([pscustomobject]@{}) -Force }
     $newSize = if ($PSBoundParameters.ContainsKey('Size')) { $Size } else { $appearance.Size }
     $profile.font | Add-Member -NotePropertyName face -NotePropertyValue $choice.Family -Force
-    $profile.font | Add-Member -NotePropertyName size -NotePropertyValue $newSize -Force
+    if ($null -ne $newSize) {
+        $profile.font | Add-Member -NotePropertyName size -NotePropertyValue $newSize -Force
+    } else { $profile.font.PSObject.Properties.Remove('size') }
     # Use each font's natural metrics. "1" is 1 em, not the default cell width.
     foreach ($metric in @('cellWidth','cellHeight')) {
         if ($choice.$metric) {
@@ -153,7 +165,8 @@ function global:Set-TerminalFont {
     $profile.font | Add-Member -NotePropertyName weight -NotePropertyValue 'normal' -Force
     $profile.font | Add-Member -NotePropertyName builtinGlyphs -NotePropertyValue $true -Force
     Write-ShellTerminalSettings -Path $settingsPath -Settings $settings -Snapshot $snapshot
-    Write-Host ('Schrift: {0} · {1} pt · {2}' -f $choice.Family, $newSize, $profile.name)
+    $sizeLabel=if($null -ne $newSize){[string]$newSize+' pt'}else{'Terminal-Standard'}
+    Write-Host ('Schrift: {0} · {1} · {2}' -f $choice.Family, $sizeLabel, $profile.name)
     if ($Reload) { Open-FreshTerminalTab }
 }
 Set-Alias -Name font -Value Set-TerminalFont -Scope Global

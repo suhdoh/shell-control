@@ -4,6 +4,17 @@
     if($script:ShellSetupProgress){& $script:ShellSetupProgress $Percent $Message}
     else{Write-Progress -Activity 'Shell Control setup' -Status $Message -PercentComplete $Percent}
 }
+function global:Invoke-ShellSetupStages {
+    param([Parameter(Mandatory)][Collections.IDictionary]$Stages)
+    $ErrorActionPreference='Stop'
+    $failures=@()
+    foreach($stage in $Stages.GetEnumerator()){
+        try {& $stage.Value} catch {$failures+=($stage.Key+': '+$_.Exception.Message)}
+    }
+    if($failures.Count){
+        throw ('Setup is incomplete. Independent configuration stages were attempted; resolve these errors and rerun setup:'+ [Environment]::NewLine+($failures -join [Environment]::NewLine))
+    }
+}
 function global:Install-ShellDependencies {
     $winget=Find-ShellExecutable winget.exe
     if(-not $winget){throw 'WinGet is missing. Install Microsoft App Installer from Microsoft Store first.'}
@@ -17,8 +28,17 @@ function global:Install-ShellDependencies {
         if($LASTEXITCODE -eq 0){continue}
         $out=Join-Path $logRoot ($id+'.out.log');$err=Join-Path $logRoot ($id+'.err.log')
         $process=Start-Process -FilePath $winget -ArgumentList @('install','--id',$id,'--exact','--source','winget','--silent','--accept-source-agreements','--accept-package-agreements','--disable-interactivity') -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
+        # Retain the native handle before polling; Windows can otherwise lose the exit code.
+        $null=$process.Handle
         while(-not $process.HasExited){Send-ShellSetupProgress ([int](100*$i/$packages.Count)) ('Installing '+$id);Start-Sleep -Milliseconds 200;$process.Refresh()}
-        if($process.ExitCode -ne 0){throw ('Installation failed: '+$id+'. See '+$out)}
+        $process.WaitForExit()
+        if($null -eq $process.ExitCode -or $process.ExitCode -ne 0){
+            $details=@(foreach($log in @($out,$err)){
+                if(Test-Path -LiteralPath $log){Get-Content -LiteralPath $log -Tail 12 -ErrorAction SilentlyContinue}
+            }) -join [Environment]::NewLine
+            $code=if($null -eq $process.ExitCode){'unavailable'}else{[string]$process.ExitCode}
+            throw ('Installation failed: '+$id+' (WinGet exit code: '+$code+').'+[Environment]::NewLine+$details+[Environment]::NewLine+'Logs: '+$out+'; '+$err)
+        }
     }
     # Pick up per-user and machine PATH changes for this setup session.
     $env:PATH=[Environment]::GetEnvironmentVariable('PATH','Machine')+';'+[Environment]::GetEnvironmentVariable('PATH','User')
@@ -33,6 +53,19 @@ function global:Get-ShellDownloadedArchive {
     Invoke-WebRequest -Uri $Package.Url -OutFile $path -UseBasicParsing -ErrorAction Stop
     if((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash -ne $Package.Sha256){throw ('Checksum failed: '+$Package.Name)}
     $path
+}
+function global:Save-ShellFontReceipt {
+    param([Parameter(Mandatory)][object[]]$Fonts)
+    $path=Join-Path $global:ShellControlRoot 'installed-fonts.json'
+    $snapshot=Read-ShellTextSnapshot $path
+    $existing=if($snapshot.Exists){@($snapshot.Text|ConvertFrom-Json -ErrorAction Stop)}else{@()}
+    $byPath=@{}
+    foreach($font in (@($existing)+@($Fonts))){
+        if(-not $font.Path -or -not $font.Family){throw 'The installed font receipt contains an invalid entry.'}
+        $byPath[[IO.Path]::GetFullPath([string]$font.Path)]=$font
+    }
+    $receipt=@($byPath.Values|Sort-Object Family,Style,Path)
+    Write-ShellAtomicText -Path $path -Text (ConvertTo-Json -InputObject $receipt -Depth 5) -ExpectedHash $snapshot.Hash -Json
 }
 function global:Install-ShellFonts {
     param([ValidateSet('Recommended','All')][string]$Pack='Recommended')
@@ -53,7 +86,6 @@ public static class ShellControlFontApi {
 }
 "@
     }
-    $receipt=@()
     for($i=0;$i -lt $packages.Count;$i++){
         $package=$packages[$i]
         Send-ShellSetupProgress ([int](100*$i/$packages.Count)) ('Fonts: '+$package.Name+' · '+($i+1)+'/'+$packages.Count)
@@ -78,10 +110,10 @@ public static class ShellControlFontApi {
             $path=Join-Path $folder $font.File
             New-ItemProperty -LiteralPath $registry -Name ($font.Family+' '+$font.Style+' (TrueType)') -Value $path -PropertyType String -Force|Out-Null
             if([ShellControlFontApi]::AddFontResourceEx($path,0,[IntPtr]::Zero) -lt 1){throw ('Windows could not load '+$font.File)}
-            $receipt+=[pscustomobject]@{Family=$font.Family;Style=$font.Style;Path=$path}
+            # Persist each successful registration so a later package failure retains progress.
+            Save-ShellFontReceipt -Fonts @([pscustomobject]@{Family=$font.Family;Style=$font.Style;Path=$path})
         }
     }
-    Write-ShellAtomicText -Path (Join-Path $global:ShellControlRoot 'installed-fonts.json') -Text ($receipt|ConvertTo-Json -Depth 5) -Json
     $result=[UIntPtr]::Zero
     [void][ShellControlFontApi]::SendMessageTimeout([IntPtr]0xffff,0x001D,[UIntPtr]::Zero,[IntPtr]::Zero,2,200,[ref]$result)
     Send-ShellSetupProgress 100 ('Fonts ready: '+$Pack)
@@ -108,7 +140,7 @@ function global:Install-ShellProfiles {
 }
 function global:Install-ShellTerminal {
     param([switch]$PreserveProfiles,[switch]$SetDefault)
-    try {$path=Get-ShellTerminalSettingsPath} catch {
+    try {$path=Get-ShellTerminalSettingsPath} catch [IO.FileNotFoundException] {
         if(-not(Find-ShellExecutable wt.exe)){throw}
         $path=Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'
         New-Item -ItemType Directory -Path (Split-Path $path) -Force|Out-Null
@@ -123,7 +155,7 @@ function global:Install-ShellTerminal {
     if(-not $settings.profiles.list){$settings.profiles|Add-Member -NotePropertyName list -NotePropertyValue @() -Force}
     $schemes=Get-Content (Join-Path $global:ShellControlRoot 'assets\themes.json') -Raw -Encoding UTF8|ConvertFrom-Json
     $names=@($schemes|ForEach-Object name)
-    $settings|Add-Member -NotePropertyName schemes -NotePropertyValue (@($settings.schemes|Where-Object name -notin $names)+@($schemes)) -Force
+    $settings|Add-Member -NotePropertyName schemes -NotePropertyValue (@($settings.schemes|Where-Object {$_ -and $_.name -notin $names})+@($schemes)) -Force
     if(-not $PreserveProfiles){
         $profiles=@(
             @{guid='{2947bb6d-5661-4ace-9b6d-842eab823451}';name='Shell Control · PowerShell 7';commandline='pwsh.exe -NoLogo'},
@@ -160,8 +192,9 @@ function global:Install-ShellCmd {
 }
 function global:Get-ShellSetupLaunchParameters {
     param([ValidateSet('Dependencies','Fonts','Profiles','Terminal')][string]$Component,
-        [ValidateSet('Recommended','All')][string]$Pack='Recommended',[string]$StatusPath,[bool]$IsAdministrator)
+        [ValidateSet('Recommended','All')][string]$Pack='Recommended',[string]$StatusPath,[bool]$IsAdministrator,[string]$TerminalSettingsPath=$global:ShellControlSettingsPath)
     $arguments=@('-NoLogo','-NoProfile','-ExecutionPolicy','Bypass','-File',('"'+(Join-Path $global:ShellControlRoot 'SetupWorker.ps1')+'"'),'-Root',('"'+$global:ShellControlRoot+'"'),'-Component',$Component,'-Pack',$Pack,'-StatusPath',('"'+$StatusPath+'"'))
+    if($TerminalSettingsPath){$arguments+=@('-TerminalSettingsPath',('"'+$TerminalSettingsPath+'"'))}
     $launch=@{FilePath=(Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe');ArgumentList=$arguments;WindowStyle='Hidden';PassThru=$true}
     if($Component -eq 'Dependencies' -and -not $IsAdministrator){$launch.Verb='RunAs'}
     $launch
@@ -169,7 +202,13 @@ function global:Get-ShellSetupLaunchParameters {
 function global:Invoke-ShellSetup {
     param([ValidateSet('Dependencies','Fonts','Profiles','Terminal','All')][string]$Component,[ValidateSet('Recommended','All')][string]$Pack='Recommended')
     if($Component -eq 'All'){
-        foreach($part in @('Dependencies','Fonts','Profiles','Terminal')){Invoke-ShellSetup -Component $part -Pack $Pack}
+        $stages=[ordered]@{
+            Dependencies={Invoke-ShellSetup -Component Dependencies -Pack $Pack}
+            Fonts={Invoke-ShellSetup -Component Fonts -Pack $Pack}
+            Profiles={Invoke-ShellSetup -Component Profiles -Pack $Pack}
+            Terminal={Invoke-ShellSetup -Component Terminal -Pack $Pack}
+        }
+        Invoke-ShellSetupStages -Stages $stages
         return
     }
     $folder=Join-Path $global:ShellControlRoot ('logs\setup-'+[guid]::NewGuid().ToString('N'))
@@ -179,10 +218,12 @@ function global:Invoke-ShellSetup {
     $params=Get-ShellSetupLaunchParameters -Component $Component -Pack $Pack -StatusPath $statusPath -IsAdministrator $admin
     Show-ShellSetupProgress 0 'Starting setup'
     $process=Start-Process @params
+    $null=$process.Handle
     while(-not $process.HasExited){
         if(Test-Path -LiteralPath $statusPath){try{$status=Get-Content $statusPath -Raw -Encoding UTF8|ConvertFrom-Json;Show-ShellSetupProgress $status.Percent $status.Message}catch{}}
         Start-Sleep -Milliseconds 150;$process.Refresh()
     }
+    $process.WaitForExit()
     $status=if(Test-Path -LiteralPath $statusPath){Get-Content $statusPath -Raw -Encoding UTF8|ConvertFrom-Json}else{$null}
     if($process.ExitCode -ne 0 -or -not $status -or $status.Error){throw $(if($status.Error){$status.Error}else{'Setup did not complete. See '+$folder})}
 }

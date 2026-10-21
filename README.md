@@ -74,17 +74,17 @@ shell-menu
 .\Install.ps1 -InstallPath D:\ShellControl
 ```
 
-`-NoProfiles`, `-NoTerminal` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained.
+`-NoProfiles`, `-NoTerminal` and `-NoInteractive` are available for selective or unattended configuration. Setup logs and timestamped backups are stored below the installation folder. If a dependency or font installation fails, setup still attempts the independent profile and Terminal configuration, then reports the failed stages. A partial setup is not reported as a completed installation. Re-running setup replaces its own import block rather than appending duplicates. Existing language and prompt preferences are retained.
 
 Terminal and profile changes use a temporary file followed by replacement, with unique backups in `.shell-control-backups` beside the edited file. Detected changes since reading cause the save to abort rather than overwrite a newer version. These protections do not provide a transaction or automatic rollback for the entire installation. See [SECURITY.md](SECURITY.md) for the scope and remaining limitations.
 
 ## Themes and fonts
 
-Theme families include Amber 340, Osaka Jade, Matrix, Dark Crimson, SynthWave 84, Rosé Pine, Catppuccin and Gruvbox. Rosé Pine, Catppuccin and Gruvbox variants are nested beneath their families. Fonts and prompts use the Terminal palette where supported.
+Theme families include Amber 340, Osaka Jade, Matrix, Dark Crimson, SynthWave 84, Rosé Pine, Catppuccin and Gruvbox. Rosé Pine, Catppuccin and Gruvbox variants are nested beneath their families. Fonts and prompts use the Terminal palette where supported. Bundled themes remain selectable before their first import; selecting one adds its scheme when needed. Theme, font and CRT controls require a Windows Terminal tab. A custom pixel shader takes precedence over CRT; disable it in Terminal settings before enabling the CRT effect. When multiple Terminal installations contain the same active profile, select the settings file explicitly with `-TerminalSettingsPath`; setup retains that choice for later sessions and menu workers.
 
 The verified font catalog contains 85 families. The full pack downloads 63 upstream Nerd Font archives; the recommended pack contains Terminess, Gohu, JetBrains Mono, Cascadia Mono, IBM Plex Mono and Meslo. Archives are pinned to Nerd Fonts v3.5.1 and checked against SHA-256 digests. Font licenses are copied with the installed files. Fonts that lack the required symbols or have incompatible character metrics are excluded. No font binaries are redistributed in this repository.
 
-Font choices in the menu are limited to installed families. A newly installed font may require a new Terminal tab before Windows refreshes its font cache. Natural glyph metrics are used; the retro Terminess preset retains a small spacing adjustment.
+Font choices in the menu are limited to installed families, with an installed/available count and a shortcut to font installation. Successful font registrations are saved as setup progresses and retained across packs, so rerunning setup resumes after a partial failure. A newly installed font may require a new Terminal tab before Windows refreshes its font cache. Natural glyph metrics are used; the retro Terminess preset retains a small spacing adjustment.
 
 The native prompt is the default for fast startup. Oh My Posh is an optional engine using the included minimal configuration. Switch it under **Appearance → Prompt** and open a new tab if your current session retains an earlier prompt hook.
 

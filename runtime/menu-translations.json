@@ -2,6 +2,7 @@
   "en": {
     "Übersicht": "Overview",
     "Schriften": "Fonts",
+    "Installierte Schriften: {0}/{1}": "Installed fonts: {0}/{1}",
     "Schriftgröße": "Font size",
     "Befehle": "Commands",
     "Befehlsliste": "Commands",

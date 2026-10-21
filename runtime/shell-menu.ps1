@@ -240,13 +240,17 @@ function global:Get-ShellMenuMatches {
     }
 }
 function global:Get-ShellMenuPickerColors {
-    $path=(Get-ShellTerminalSettingsPath)
-    $s=Get-Content -LiteralPath $path -Raw -Encoding UTF8|ConvertFrom-Json
-    $id=if($env:WT_PROFILE_ID){$env:WT_PROFILE_ID}else{$s.defaultProfile}
-    $p=$s.profiles.list|Where-Object guid -eq $id|Select-Object -First 1
-    $name=if($p.colorScheme){$p.colorScheme}else{$s.profiles.defaults.colorScheme}
-    $scheme=$s.schemes|Where-Object name -eq $name|Select-Object -First 1
-    $hex=if($scheme.cyan){$scheme.cyan}else{'#67B7BA'}
+    # Keep setup and error navigation available even before Terminal is configured.
+    $hex='#67B7BA'
+    try {
+        $path=(Get-ShellTerminalSettingsPath)
+        $s=Read-ShellTerminalJson $path
+        $id=if($env:WT_PROFILE_ID){$env:WT_PROFILE_ID}else{$s.defaultProfile}
+        $p=$s.profiles.list|Where-Object guid -eq $id|Select-Object -First 1
+        $name=if($p.colorScheme){$p.colorScheme}else{$s.profiles.defaults.colorScheme}
+        $scheme=Get-ShellTerminalSchemes -Settings $s|Where-Object name -eq $name|Select-Object -First 1
+        if($scheme.cyan -match '^#[0-9a-fA-F]{6}$'){$hex=$scheme.cyan}
+    } catch {Write-Verbose ('Menu colors use the default palette. '+$_.Exception.Message)}
     $r=[Convert]::ToInt32($hex.Substring(1,2),16)
     $g=[Convert]::ToInt32($hex.Substring(3,2),16)
     $b=[Convert]::ToInt32($hex.Substring(5,2),16)
@@ -418,10 +422,13 @@ function global:Show-ShellSetupProgress {
 }
 function global:Get-ShellFontChoices {
     $catalog=Get-Content (Join-Path $global:ShellControlRoot 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json
-    Add-Type -AssemblyName PresentationCore
-    $families=@([Windows.Media.Fonts]::SystemFontFamilies|ForEach-Object Source)
+    $families=@()
     $receipt=Join-Path $global:ShellControlRoot 'installed-fonts.json'
     if(Test-Path -LiteralPath $receipt){$families+=@(Get-Content $receipt -Raw -Encoding UTF8|ConvertFrom-Json|Where-Object {Test-Path -LiteralPath $_.Path}|ForEach-Object Family)}
+    try {
+        Add-Type -AssemblyName PresentationCore -ErrorAction Stop
+        $families+=@([Windows.Media.Fonts]::SystemFontFamilies|ForEach-Object Source)
+    } catch {Write-Verbose ('System font discovery is unavailable; using registered font receipts. '+$_.Exception.Message)}
     $catalog|Where-Object Family -in $families|Sort-Object Family
 }
 function global:Show-ShellMenu {
@@ -434,13 +441,17 @@ function global:Show-ShellMenu {
         [Console]::OutputEncoding=New-Object Text.UTF8Encoding($false)
         [Console]::Write("$esc[?1049h$esc[H")
         while($true){
+            try {
             $context=$notice
             if(-not $context -and $page -in @('Schriften','Schriftart','Schriftgröße')){
                 $a=Get-ShellTerminalAppearance
                 $context=(ConvertTo-ShellMenuText 'Aktuelle Schrift: ')+$a.Font+' · '+$a.Size+' pt'
             }
+            if(-not $context -and $page -eq 'CRT'){
+                $a=Get-ShellTerminalAppearance
+                $context='CRT: '+$(if($a.CRT){ConvertTo-ShellMenuText 'an'}else{ConvertTo-ShellMenuText 'aus'})+' · '+$a.ProfileName
+            }
             Write-ShellMenuFrame $page $context;$notice=''
-            try {
                 switch($page){
                     'Übersicht' {
                         $choice=Select-ShellMenuItem '' @('Ansicht','Systeminfo','Werkzeuge','Installation','Einstellungen','Beenden')
@@ -473,8 +484,12 @@ function global:Show-ShellMenu {
                     'Schriftart' {
                         $catalog=@(Get-ShellFontChoices)
                         $options=@($catalog|ForEach-Object {$_.Shortcut+'  ·  '+$_.Family})
-                        $choice=Select-ShellMenuItem "AaBb 012345 · ┌─┬─┐ · ███ ·   " ($options+@('← Zurück'))
+                        $total=@(Get-Content -LiteralPath (Join-Path $global:ShellControlRoot 'font-catalog.json') -Raw -Encoding UTF8|ConvertFrom-Json).Count
+                        $header=(ConvertTo-ShellMenuText 'Installierte Schriften: {0}/{1}') -f $catalog.Count,$total
+                        if($catalog.Count -lt $total){$options+=@('Schriften installieren')}
+                        $choice=Select-ShellMenuItem ($header+"`nAaBb 012345 · ┌─┬─┐ · ███ ·   ") ($options+@('← Zurück'))
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Schriften';continue}
+                        if($choice -eq 'Schriften installieren'){$fontReturn='Schriftart';$page='Schriften installieren';continue}
                         Set-TerminalFont (($choice -split '\s+',2)[0]) 6>$null
                     }
                     'Schriftgröße' {
@@ -537,6 +552,7 @@ function global:Show-ShellMenu {
                         $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','Umschalten','← Zurück')
                         if(-not $choice -or $choice -eq '← Zurück'){$page='Ansicht';continue}
                         Set-TerminalCrt $(switch($choice){'Einschalten'{'on'} 'Ausschalten'{'off'} default{'toggle'}}) 6>$null
+                        $notice=if((Get-ShellTerminalAppearance).CRT){'✓ CRT eingeschaltet'}else{'✓ CRT ausgeschaltet'}
                     }
                     'Fastfetch beim Start' {
                         $choice=Select-ShellMenuItem '' @('Einschalten','Ausschalten','← Zurück')
